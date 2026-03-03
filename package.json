@@ -1,11 +1,17 @@
 {
   "name": "before-dawn-editor",
-  "version": "0.0.0",
-  "type": "module",
   "description": "JavaScript editor for structured data with JSON export",
+  "version": "0.0.0",
+  "main": "server.js",
+  "type": "module",
   "scripts": {
-    "start": "google-chrome index.html"
+    "clean": "rm -rf dist",
+    "build": "npm run clean && mkdir -p dist && cp -r src/. dist/",
+    "start": "node server.js"
   },
   "author": "",
-  "license": "ISC"
+  "license": "ISC",
+  "dependencies": {
+    "dotenv": "^17.3.1"
+  }
 }

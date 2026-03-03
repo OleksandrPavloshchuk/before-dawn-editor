@@ -1,0 +1,36 @@
+body {
+    font-family: "Roboto Light", sans-serif;
+    font-size: 12pt;
+}
+
+.bde-root {
+    padding: 1em;
+}
+
+.bde-header {
+    padding: 0.5em;
+}
+
+.bde-field {
+    background-color: aliceblue;
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 10px;
+}
+
+.bde-item {
+    background-color: whitesmoke;
+    border-radius: 3px;
+    padding: 6px;
+    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+    text-align: center;
+    vertical-align: middle;
+}
+
+.bde-item:hover {
+    background-color: honeydew;
+}
+
+.bde-big {
+    font-size: 14pt;
+}
