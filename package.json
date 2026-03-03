@@ -1,0 +1,11 @@
+{
+  "name": "before-dawn-editor",
+  "version": "0.0.0",
+  "type": "module",
+  "description": "JavaScript editor for structured data with JSON export",
+  "scripts": {
+    "start": "google-chrome index.html"
+  },
+  "author": "",
+  "license": "ISC"
+}
