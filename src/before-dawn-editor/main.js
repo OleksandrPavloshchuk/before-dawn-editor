@@ -1,93 +1,66 @@
 export const initBeforeDownEditor = (rootElem, schema) => rootElem.appendChild(convertSchemaToElem(schema));
 
-const convertSchemaToElem = (schema) => {
-
-    const result = document.createElement("div");
-    result.setAttribute("class", "bde-root");
-
-    result.appendChild(createHeader());
-
-    const field = document.createElement("div");
-    field.setAttribute("class", "bde-field");
-    result.appendChild(field);
-
-    // TODO determine correct type with more sophisticated way
-    if ("object" === typeof schema) {
-        addObject(field, schema);
-    } else {
-        // TODO create another serializes
-        console.log("TRACE", "TODO implement this");
-    }
-
+export const elem = (tag, attributes = {}, children = []) => {
+    const result = document.createElement(tag);
+    Object.entries(attributes).forEach(([name, value]) => addProperty(result, name, value));
+    children.forEach( (child) => appendChild(result, child));
     return result;
 };
 
-const createHeader = () => {
-    const result = document.createElement("div");
-    result.setAttribute("class", "bde-header");
-    result.appendChild(createAction("Back (TODO implement this)", "alert('todo')"));
-    return result;
+export const div = ( attributes = {}, children = []) => elem("div", attributes, children);
+export const action = (text, command) => elem("span", {"onClick": command}, [text]);
+export const card = (children) => div({"class": "bde-item"}, children);
+
+// private functions
+
+const addProperty = (elem, name, value) => {
+    if (name === "class" ) {
+        elem.className = value;
+    } else if (name.startsWith("on")) {
+        const eventName = name.slice(2).toLowerCase();
+        elem.addEventListener(eventName, value);
+    } else {
+        elem.setAttribute(name, value);
+    }
 }
 
-const createAction = (text, command) => {
-    const result = document.createElement("span");
-    result.innerHTML = text;
-    result.setAttribute("onclick", command);
-    return result;
-}
+const appendChild = (parent, child) => {
+    if (Array.isArray(child)) {
+        child.forEach(c => appendChild(parent, c));
+    } else {
+        const node = typeof child === "string"
+            ? document.createTextNode(child)
+            : child;
+        parent.appendChild(node);
+    }
+};
 
-const createCard = () => {
-    const result = document.createElement("div");
-    result.setAttribute("class", "bde-item");
-    return result;
-}
+const convertSchemaToElem = (schema) => {
 
-const addObject = (root, schema) => {
-    root.appendChild(createObjectBegin());
-    // TODO create object
-    root.appendChild(createObjectEnd());
-}
+    // TODO determine correct type with more sophisticated way
+    let obj;
+    if ("object" === typeof schema) {
+        obj = objectCards(schema);
+    } else {
+        // TODO create another serializes
+        obj = "TRACE: TODO implement this";
+    }
 
-const createObjectBegin = () => {
-    const result = createCard();
-    result.appendChild(createBig("{"));
-    return result;
-}
+    return div({"class": "bde-root"}, [
+        header(), div({"class": "bde-field"}, [obj])
+    ]);
 
-const createObjectEnd = () => {
-    const result = createCard();
-    result.appendChild(createBig("}"));
-    return result;
-}
+};
 
-const createBig = (text) => {
-    const result = document.createElement("span");
-    result.setAttribute("class", "bde-big");
-    result.innerText = text;
-    return result;
-}
+const header = () => div({"class": "bde-header"}, [
+    action("Back (TODO implement this)", () => alert('todo'))
+]);
 
-/*
-function el(tag, props = {}, children = []) {
-    const element = document.createElement(tag);
+const objectCards = (schema) => {
+    // TODO convert to children
+    const schemaChildren = [];
 
-    Object.entries(props).forEach(([key, value]) => {
-        if (key === "class") element.className = value;
-        else if (key.startsWith("on")) {
-            element.addEventListener(key.slice(2).toLowerCase(), value);
-        } else {
-            element.setAttribute(key, value);
-        }
-    });
+    return [staticCard("{"), ...schemaChildren, staticCard("}")];
+};
 
-    children.forEach(child => {
-        element.appendChild(
-            typeof child === "string"
-                ? document.createTextNode(child)
-                : child
-        );
-    });
-
-    return element;
-}
- */
+const staticCard = (text) => card([elem("span", {"class": "bde-big"}, [text])]);
