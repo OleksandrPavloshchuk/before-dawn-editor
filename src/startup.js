@@ -6,5 +6,9 @@ document.addEventListener('DOMContentLoaded', () => {
 });
 
 const createDocumentSchema = () => ({
-
+    one: "two",
+    three: "four",
+    id: "1",
+    name: "John Dow",
+    salary: "0.01"
 });

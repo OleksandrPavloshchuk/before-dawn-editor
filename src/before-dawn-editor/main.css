@@ -12,6 +12,7 @@ body {
 }
 
 .bde-field {
+    padding: 10px;
     background-color: aliceblue;
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
@@ -32,5 +33,17 @@ body {
 }
 
 .bde-big {
-    font-size: 14pt;
+    font-size: 20pt;
+    vertical-align: middle;
+}
+
+.bde-item-header {
+    font-weight: bold;
+    text-align: center;
+}
+
+.bde-item-with-header {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 5px;
 }

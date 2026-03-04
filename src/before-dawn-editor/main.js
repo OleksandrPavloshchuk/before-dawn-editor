@@ -1,3 +1,5 @@
+import {card, cardWithHeader} from "./cards/base.js";
+
 export const initBeforeDownEditor = (rootElem, schema) => rootElem.appendChild(convertSchemaToElem(schema));
 
 export const elem = (tag, attributes = {}, children = []) => {
@@ -9,7 +11,6 @@ export const elem = (tag, attributes = {}, children = []) => {
 
 export const div = ( attributes = {}, children = []) => elem("div", attributes, children);
 export const action = (text, command) => elem("span", {"onClick": command}, [text]);
-export const card = (children) => div({"class": "bde-item"}, children);
 
 // private functions
 
@@ -35,7 +36,17 @@ const appendChild = (parent, child) => {
     }
 };
 
+const raiseError = (error) => {
+    // TODO show error
+    alert(error);
+    console.log("ERROR", error);
+}
+
 const convertSchemaToElem = (schema) => {
+    if (!schema) {
+        raiseError("No schema of data");
+        return;
+    }
 
     // TODO determine correct type with more sophisticated way
     let obj;
@@ -57,9 +68,7 @@ const header = () => div({"class": "bde-header"}, [
 ]);
 
 const objectCards = (schema) => {
-    // TODO convert to children
-    const schemaChildren = [];
-
+    const schemaChildren = Object.entries(schema).map(([name, value]) => cardWithHeader(name, [value]));
     return [staticCard("{"), ...schemaChildren, staticCard("}")];
 };
 
