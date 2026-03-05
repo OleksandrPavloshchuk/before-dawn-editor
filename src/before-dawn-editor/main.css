@@ -51,7 +51,7 @@ body {
 
 .bde-item-with-header {
     display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    grid-template-columns: 1fr;
     gap: 5px;
 }
 
@@ -59,4 +59,25 @@ body {
     display: grid;
     grid-template-columns: 1fr 20fr 1fr;
     gap: 5px;
+}
+
+.bde-drill-down {
+    cursor: pointer;
+}
+
+.bde-drill-down:hover {
+    text-decoration: underline;
+}
+
+.bde-breadscrumb {
+    padding: 0.5em;
+    cursor: pointer;
+}
+
+.bde-breadscrumb:before {
+    content: "/";
+}
+
+.bde-breadscrumb:hover {
+    text-decoration: underline;
 }

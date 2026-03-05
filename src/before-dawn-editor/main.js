@@ -1,7 +1,9 @@
 import {card, namedCard} from "./cards/base.js";
 
-export const initBeforeDownEditor = (rootElem, schema, name, path = []) =>
-    rootElem.appendChild(convertSchemaToElem(schema, name, path));
+export const initBeforeDownEditor = (rootElem, args) => {
+    rootElem.replaceChildren();
+    rootElem.appendChild(convertSchemaToControl(args));
+}
 
 export const elem = (tag, attributes = {}, children = []) => {
     const result = document.createElement(tag);
@@ -43,37 +45,48 @@ const raiseError = (error) => {
     console.log("ERROR", error);
 }
 
-const convertSchemaToElem = (schema, name, path) => {
-    if (!schema) {
+const convertSchemaToControl = (args) => {
+    if (!args || !args.schema) {
         raiseError("No schema of data");
         return;
     }
 
-    // TODO determine correct type with more sophisticated way
     let obj;
-    if ("object" === typeof schema) {
-        obj = objectCards(schema);
-    } else {
-        // TODO create another serializes
-        obj = "TODO implement this";
+    switch( args.schema.type ) {
+        case "struct":
+            obj = structCards(args);
+            break;
+        default:
+            obj = "TODO implement this";
     }
 
     return div({"class": "bde-root"}, [
-        pathDiv(path), headerDiv(name), div({"class": "bde-field"}, [obj])
+        pathDiv(args.path), headerDiv(args.name), div({"class": "bde-field"}, [obj])
     ]);
 
 };
 
 const pathDiv = (path) => {
-    // TODO convert to path elements
-    const pathArray = [];
-    return div( {"class": "bde-path"}, pathArray);
+    const breadscumbs = path.map( (args) => {
+        const drillDown = () => initBeforeDownEditor(
+            document.getElementById("root"), args);
+
+        const result = elem("span",
+            {"onClick": drillDown, "class": "bde-breadscrumb"},
+            [args.name]);
+
+        return result;
+    });
+
+    return div( {"class": "bde-path"}, breadscumbs);
 }
 
 const headerDiv = (name) => div({"class": "bde-header"}, [name]);
 
-const objectCards = (schema) => {
-    const schemaChildren = Object.entries(schema).map(([name, value]) => namedCard(name, [value]));
+const structCards = (args) => {
+    const path = [...args.path, args];
+    const schemaChildren = Object.entries(args.schema.properties)
+        .map(([name, schema]) => namedCard({schema, name, path}));
     return [staticCard("{"), ...schemaChildren, staticCard("}")];
 };
 
@@ -86,7 +99,7 @@ const getByPath = (obj, path) =>
 const setByPath = (obj, path, value) => {
     const last = path[path.length - 1];
     const parent = path.slice(0, -1)
-        .reduce((acc, key) => acc[key], obj);
+        .reduce((acc, key) => acc?.[key], obj);
 
     parent[last] = value;
 };
