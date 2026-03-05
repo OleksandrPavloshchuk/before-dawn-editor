@@ -9,6 +9,13 @@ body {
 
 .bde-header {
     padding: 0.5em;
+    font-size: 14pt;
+    font-weight: bold;
+}
+
+.bde-path {
+    padding: 0.5em;
+    font-size: 10pt;
 }
 
 .bde-field {
@@ -45,5 +52,11 @@ body {
 .bde-item-with-header {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+    gap: 5px;
+}
+
+.bde-item-in-array {
+    display: grid;
+    grid-template-columns: 1fr 20fr 1fr;
     gap: 5px;
 }
