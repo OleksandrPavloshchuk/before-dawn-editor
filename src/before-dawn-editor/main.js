@@ -1,24 +1,36 @@
 import {card, namedCard} from "./cards/base.js";
 
-export const initBeforeDownEditor = (rootElem, args) => {
-    rootElem.replaceChildren();
-    rootElem.appendChild(convertSchemaToControl(args));
+export const render = (args) => {
+    getRoot().replaceChildren();
+    getRoot().appendChild(convertSchemaToControl(args));
 }
 
 export const elem = (tag, attributes = {}, children = []) => {
     const result = document.createElement(tag);
     Object.entries(attributes).forEach(([name, value]) => addAttribute(result, name, value));
-    children.forEach( (child) => appendChild(result, child));
+    children.forEach((child) => appendChild(result, child));
     return result;
 };
 
-export const div = ( attributes = {}, children = []) => elem("div", attributes, children);
+export const div = (attributes = {}, children = []) => elem("div", attributes, children);
+export const span = (attributes = {}, children = []) => elem("span", attributes, children);
 export const action = (text, command) => elem("span", {"onClick": command}, [text]);
+
+export const getByPath = (obj, path) =>
+    path.reduce((acc, key) => acc?.[key], obj);
+
+export const setByPath = (obj, path, value) => {
+    const last = path[path.length - 1];
+    const parent = path.slice(0, -1)
+        .reduce((acc, key) => acc?.[key], obj);
+
+    parent[last] = value;
+};
 
 // private functions
 
 const addAttribute = (elem, name, value) => {
-    if (name === "class" ) {
+    if (name === "class") {
         elem.className = value;
     } else if (name.startsWith("on")) {
         const eventName = name.slice(2).toLowerCase();
@@ -52,7 +64,7 @@ const convertSchemaToControl = (args) => {
     }
 
     let obj;
-    switch( args.schema.type ) {
+    switch (args.schema.type) {
         case "struct":
             obj = structCards(args);
             break;
@@ -67,18 +79,10 @@ const convertSchemaToControl = (args) => {
 };
 
 const pathDiv = (path) => {
-    const breadscumbs = path.map( (args) => {
-        const drillDown = () => initBeforeDownEditor(
-            document.getElementById("root"), args);
-
-        const result = elem("span",
-            {"onClick": drillDown, "class": "bde-breadscrumb"},
+    const toSpan = (args) =>
+        span({"onClick": () => render(args), "class": "bde-back"},
             [args.name]);
-
-        return result;
-    });
-
-    return div( {"class": "bde-path"}, breadscumbs);
+    return div({"class": "bde-path"}, path.map(toSpan));
 }
 
 const headerDiv = (name) => div({"class": "bde-header"}, [name]);
@@ -92,14 +96,7 @@ const structCards = (args) => {
 
 const staticCard = (text) => card([elem("span", {"class": "bde-big"}, [text])]);
 
-// ---
-const getByPath = (obj, path) =>
-    path.reduce((acc, key) => acc?.[key], obj);
+const getRoot = () => document.getElementById("root");
 
-const setByPath = (obj, path, value) => {
-    const last = path[path.length - 1];
-    const parent = path.slice(0, -1)
-        .reduce((acc, key) => acc?.[key], obj);
-
-    parent[last] = value;
-};
+export class initBeforeDownEditor {
+}

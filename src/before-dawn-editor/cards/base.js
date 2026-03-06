@@ -1,4 +1,4 @@
-import {elem, div, action, initBeforeDownEditor} from "../main.js";
+import {div, action, span, render} from "../main.js";
 
 export const card = (children) => div({"class": "bde-item"}, children);
 
@@ -32,16 +32,11 @@ export const orderedCard = (index, children) => div({"class": "bde-item bde-item
 const structContent = (args) => {
     // TODO create "card content" for struct
 
-    const start = elem("span", {}, ["{"]);
-    const end = elem("span", {}, ["}"]);
+    const start = span({}, ["{"]);
+    const end = span({}, ["}"]);
 
-    const temp = elem("span", {}, ["TODO: fields on top"]);
+    const temp = span( {}, ["TODO: fields on top"]);
 
-    const drillDown = () => initBeforeDownEditor(
-        document.getElementById("root"), args);
-
-    const result = div({onClick: drillDown, "class": "bde-drill-down" },
+    return div({onClick: () => render(args), "class": "bde-drill-down"},
         [start, temp, end])
-
-    return result;
 }

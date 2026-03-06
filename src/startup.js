@@ -1,13 +1,11 @@
-import {initBeforeDownEditor} from "./before-dawn-editor/main.js";
+import {render} from "./before-dawn-editor/main.js";
 
 document.addEventListener('DOMContentLoaded', () => {
-    initBeforeDownEditor(
-        document.getElementById("root"),
-        {
-            path: [],
-            name: "person",
-            schema: schema
-        });
+    render({
+        path: [],
+        name: "person",
+        schema: schema
+    });
 });
 
 const data = {

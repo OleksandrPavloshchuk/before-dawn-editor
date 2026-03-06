@@ -63,21 +63,25 @@ body {
 
 .bde-drill-down {
     cursor: pointer;
+    color: darkcyan;
 }
 
 .bde-drill-down:hover {
     text-decoration: underline;
+    color: darkturquoise;
 }
 
-.bde-breadscrumb {
-    padding: 0.5em;
+.bde-back {
+    color: darkcyan;
+    padding-left: 0.5em;
     cursor: pointer;
 }
 
-.bde-breadscrumb:before {
+.bde-back:before {
     content: "/";
 }
 
-.bde-breadscrumb:hover {
+.bde-back:hover {
+    color: darkturquoise;
     text-decoration: underline;
 }
