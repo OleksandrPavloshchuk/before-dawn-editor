@@ -68,6 +68,9 @@ const convertSchemaToControl = (args) => {
         case "struct":
             obj = structCards(args);
             break;
+        case "array":
+            obj = arrayCards(args);
+            break;
         default:
             obj = "TODO implement this";
     }
@@ -97,9 +100,15 @@ const structCards = (args) => {
     return [staticCard("{"), ...schemaChildren, staticCard("}")];
 };
 
+const arrayCards = (args) => {
+    const path = [...args.path, args];
+    const schema = args.schema.item;
+    const arrayChildren = args.data.map((data, index) => {
+        return namedCard({schema, name: `${index}`, path, data})
+    });
+    return [staticCard("["), ...arrayChildren, staticCard("]")];
+};
+
 const staticCard = (text) => card([elem("span", {"class": "bde-big"}, [text])]);
 
 const getRoot = () => document.getElementById("root");
-
-export class initBeforeDownEditor {
-}

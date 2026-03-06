@@ -15,6 +15,9 @@ const data = {
         country: "UA",
         city: "Kyiv",
         street: "Metrologichna",
+        tags: [
+            "the 1st", "the 2nd", "the 3rd"
+        ],
         field1: {
             comment: "This is comment"
         }
@@ -33,6 +36,10 @@ const schema = {
                 country: {type: "staticText"},
                 city: {type: "staticText"},
                 street: {type: "staticText"},
+                tags: {
+                    type: "array",
+                    item: {type: "staticText"}
+                },
                 field1: {
                     type: "struct",
                     properties: {

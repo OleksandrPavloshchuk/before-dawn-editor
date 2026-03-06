@@ -13,6 +13,9 @@ export const namedCard = (args) => {
         case "staticText":
             content = args.data;
             break;
+        case "array":
+            content = arrayContent(args);
+            break;
         default:
             // TODO render content
             content = JSON.stringify(args.schema);
@@ -33,6 +36,13 @@ export const orderedCard = (index, children) => div({"class": "bde-item bde-item
     ]);
 
 const structContent = (args) => {
-    const downLink = span( {}, ["{ ⬇️ }"]);
+    const downLink = span( {}, ["{ " + '\u25BE' + " }"]);
     return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
 }
+
+const arrayContent = (args) => {
+    const size = args.data.length;
+    const downLink = span( {}, ["[ " + size + " " + '\u25BE' + " ]"]);
+    return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
+}
+
