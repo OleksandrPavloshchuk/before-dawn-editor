@@ -1,17 +1,24 @@
 import {render} from "./before-dawn-editor/main.js";
 
-document.addEventListener('DOMContentLoaded', () => {
-    render({
-        path: [],
-        name: "person",
-        schema: schema
-    });
-});
+document.addEventListener('DOMContentLoaded', () => render({
+    path: [],
+    name: "person",
+    schema: schema,
+    data: data
+}));
 
 const data = {
     id: "1",
     name: "John Dow",
-    birthday: "30.07.2000"
+    birthday: "30.07.2000",
+    address: {
+        country: "UA",
+        city: "Kyiv",
+        street: "Metrologichna",
+        field1: {
+            comment: "This is comment"
+        }
+    }
 };
 
 const schema = {

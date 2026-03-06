@@ -90,7 +90,10 @@ const headerDiv = (name) => div({"class": "bde-header"}, [name]);
 const structCards = (args) => {
     const path = [...args.path, args];
     const schemaChildren = Object.entries(args.schema.properties)
-        .map(([name, schema]) => namedCard({schema, name, path}));
+        .map(([name, schema]) => {
+            const data = args.data[name];
+            return namedCard({schema, name, path, data})
+        });
     return [staticCard("{"), ...schemaChildren, staticCard("}")];
 };
 

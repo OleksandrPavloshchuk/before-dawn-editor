@@ -10,6 +10,9 @@ export const namedCard = (args) => {
         case "struct":
             content = structContent(args);
             break;
+        case "staticText":
+            content = args.data;
+            break;
         default:
             // TODO render content
             content = JSON.stringify(args.schema);
@@ -30,13 +33,6 @@ export const orderedCard = (index, children) => div({"class": "bde-item bde-item
     ]);
 
 const structContent = (args) => {
-    // TODO create "card content" for struct
-
-    const start = span({}, ["{"]);
-    const end = span({}, ["}"]);
-
-    const temp = span( {}, ["TODO: fields on top"]);
-
-    return div({onClick: () => render(args), "class": "bde-drill-down"},
-        [start, temp, end])
+    const downLink = span( {}, ["{ ⬇️ }"]);
+    return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
 }
