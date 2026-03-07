@@ -1,4 +1,6 @@
-import {card, namedCard} from "./cards/base.js";
+import {card, cardWithTitle} from "./cards/base.js";
+import {insertItemAfter, insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
+import {renderFrameForStructItem} from "./cards/structFrame.js";
 
 export const render = (args) => {
     getRoot().replaceChildren();
@@ -62,24 +64,23 @@ const convertSchemaToControl = (args) => {
         raiseError("No schema of data");
         return;
     }
-
-    let obj;
-    switch (args.schema.type) {
-        case "struct":
-            obj = structCards(args);
-            break;
-        case "array":
-            obj = arrayCards(args);
-            break;
-        default:
-            obj = "TODO implement this";
-    }
-
     return div({"class": "bde-root"}, [
-        pathDiv(args.path), headerDiv(args.name), div({"class": "bde-field"}, [obj])
+        pathDiv(args.path),
+        headerDiv(args.name),
+        div({"class": "bde-field"}, createCardArray(args))
     ]);
 
 };
+
+const createCardArray = (args) => {
+    switch (args.schema.type) {
+        case "struct": return structCards(args);
+        case "array": return arrayCards(args);
+        default:
+            // TODO
+            return ["TODO implement this"];
+    }
+}
 
 const pathDiv = (path) => {
     const toSpan = (args) =>
@@ -93,22 +94,30 @@ const headerDiv = (name) => div({"class": "bde-header"}, [name]);
 const structCards = (args) => {
     const path = [...args.path, args];
     const schemaChildren = Object.entries(args.schema.properties)
-        .map(([name, schema]) => {
-            const data = args.data[name];
-            return namedCard({schema, name, path, data})
-        });
+        .map(([name, schema]) => cardWithTitle(
+            {schema, name, path, data: args.data[name]}, renderFrameForStructItem));
     return [staticCard("{"), ...schemaChildren, staticCard("}")];
 };
 
 const arrayCards = (args) => {
     const path = [...args.path, args];
     const schema = args.schema.item;
-    const arrayChildren = args.data.map((data, index) => {
-        return namedCard({schema, name: `${index}`, path, data})
-    });
-    return [staticCard("["), ...arrayChildren, staticCard("]")];
+    const arrayChildren = args.data
+        .map((data, index) => cardWithTitle(
+            {schema, name: `${index}`, path, data, size: args.data.length}, renderFrameForArrayItem));
+    return [arrayStartCard(), ...arrayChildren, arrayEndCard(arrayChildren.length)];
 };
 
-const staticCard = (text) => card([elem("span", {"class": "bde-big"}, [text])]);
+const arrayStartCard = () => card([
+    span({"class": "bde-big"}, ["["]),
+    insertItemBefore(0)
+]);
+
+const arrayEndCard = (size) => card([
+    insertItemAfter(size-1),
+    span({"class": "bde-big"}, ["]"])
+]);
+
+const staticCard = (text) => card([span({"class": "bde-big"}, [text])]);
 
 const getRoot = () => document.getElementById("root");

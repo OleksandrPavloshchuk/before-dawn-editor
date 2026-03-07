@@ -7,6 +7,33 @@ document.addEventListener('DOMContentLoaded', () => render({
     data: data
 }));
 
+/*
+const data = [
+    [
+        [ "1.1.1", "1.1.2" ],
+        [ "1.2.1", "1.2.2" ]
+    ],
+    [
+        [ "2.1.1", "2.1.2" ],
+        [ "2.2.1", "2.2.2" ]
+    ]
+];
+
+const schema = {
+    type: "array",
+    item: {
+        type: "array",
+        item: {
+            type: "array",
+            item: {
+                type: "staticText"
+            }
+        }
+    }
+};
+*/
+
+
 const data = {
     id: "1",
     name: "John Dow",
@@ -20,7 +47,12 @@ const data = {
         ],
         field1: {
             comment: "This is comment"
-        }
+        },
+        field2: [
+            {
+                dir: "dir-1"
+            }
+        ]
     }
 };
 
@@ -44,6 +76,15 @@ const schema = {
                     type: "struct",
                     properties: {
                         comment: {type: "staticText"}
+                    }
+                },
+                field2: {
+                    type: "array",
+                    item: {
+                        type: "struct",
+                        properties: {
+                            dir: {type: "staticText"}
+                        }
                     }
                 }
             }

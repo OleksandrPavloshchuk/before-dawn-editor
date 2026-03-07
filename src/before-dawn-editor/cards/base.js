@@ -1,48 +1,35 @@
-import {div, action, span, render} from "../main.js";
+import {div, span, render} from "../main.js";
 
 export const card = (children) => div({"class": "bde-item"}, children);
 
-// TODO show a simple text for a while. Use inputs in the future
-export const namedCard = (args) => {
+export const cardWithTitle = (args, renderFrame) => renderFrame(args, createContent(args));
 
-    let content;
+export const cardTitle = (args) => div({"class": "bde-item-header"}, [args.name]);
+
+//---
+
+// TODO show a simple text for a while. Use inputs in the future
+const createContent = (args) =>  {
     switch (args.schema.type) {
-        case "struct":
-            content = structContent(args);
-            break;
-        case "staticText":
-            content = args.data;
-            break;
-        case "array":
-            content = arrayContent(args);
-            break;
+        case "struct": return structContent(args);
+        case "staticText": return args.data;
+        case "array": return arrayContent(args);
         default:
             // TODO render content
-            content = JSON.stringify(args.schema);
+            return JSON.stringify(args.schema);
     }
+};
 
-    return div({"class": "bde-item bde-item-with-header"},
-        [div({"class": "bde-item-header"}, [args.name]), content]);
-}
-
-export const orderedCard = (index, children) => div({"class": "bde-item bde-item-with-header"},
-    [
-        div({"class": "bde-item-in-array"}, [
-            action("+", () => alert(`TODO add before ${index}`)),
-            ...children,
-            action("+", () => alert(`TODO add after ${index}`))
-        ]),
-        action("-", () => alert(`TODO remove ${index}`))
-    ]);
+const ARROW_DOWN = '\u25BE';
 
 const structContent = (args) => {
-    const downLink = span( {}, ["{ " + '\u25BE' + " }"]);
+    const downLink = span({}, ["{ " + ARROW_DOWN + " }"]);
     return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
 }
 
 const arrayContent = (args) => {
     const size = args.data.length;
-    const downLink = span( {}, ["[ " + size + " " + '\u25BE' + " ]"]);
+    const downLink = span({}, ["[ " + size + " " + ARROW_DOWN + " ]"]);
     return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
 }
 
