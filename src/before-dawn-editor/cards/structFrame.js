@@ -3,5 +3,5 @@ import {cardTitle} from "./base.js";
 
 export const renderFrameForStructItem = (args, content) => div(
     {"class": "item"},
-    [cardTitle(args), content]
+    [cardTitle(args), div({"class": "content"}, [content])]
 );
