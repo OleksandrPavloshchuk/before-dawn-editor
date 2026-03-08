@@ -14,6 +14,7 @@ body {
     color: #3366CC;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0);
+    margin-left: auto;
 }
 
 .link:hover {
@@ -38,6 +39,11 @@ body {
 .bde-component > .title {
     padding-top: 0.3em;
     padding-bottom: 0.3em;
+    display: flex;
+    align-items: center;
+}
+
+.bde-component > .title > .large {
     font-size: large;
     font-weight: bold;
 }
@@ -109,3 +115,26 @@ body {
 .bde-component > .area > .chain > .item > table {
     width: 100%;
 }
+
+/* Text input */
+.bde-component input[type="text"] {
+    font-family: inherit;
+    font-size: 12pt;
+
+    padding: 4px 6px;
+
+    border: 1px solid #ccc;
+    border-radius: 3px;
+
+    width: 100%;
+    box-sizing: border-box;
+
+    outline: none;
+}
+
+/* Focus */
+.bde-component input[type="text"]:focus {
+    border-color: #66CCFF;
+    box-shadow: 0 0 2px rgba(74, 144, 226, 0.6);
+}
+

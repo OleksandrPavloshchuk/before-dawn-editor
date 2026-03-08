@@ -76,7 +76,7 @@ const convertSchemaToComponent = (args) => {
 
     return div({"class": "bde-component"}, [
         navigationDiv(args.path),
-        titleDiv(args.name),
+        titleDiv(args),
         areaDiv
     ]);
 
@@ -134,27 +134,39 @@ const navigationDiv = (path) => {
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
 
-const titleDiv = (name) => div({"class": "title vertical-gap"}, [name]);
+const titleDiv = (args) => {
+    const doUpdate = action(
+        "Show object on console",
+        "",
+        () => {args.onUpdate(args.root);});
+    return div({"class": "title vertical-gap"}, [
+        span({"class": "large"}, [args.name]),
+        doUpdate]);
+}
 
 const newPath = (args) => [...args.path, args];
 
 const structCards = (args) => Object.entries(args.schema.properties)
     .map(([name, schema]) =>
         cardWithTitle({
+            root: args.root,
             schema,
             name,
             path: newPath(args),
-            data: args.data[name]
+            data: args.data[name],
+            onUpdate: args.onUpdate
         }, renderFrameForStructItem));
 
 const arrayCards = (args) => args.data
     .map((data, index) =>
         cardWithTitle({
+            root: args.root,
             schema: args.schema.item,
             name: `${index}`,
             path: newPath(args),
             data,
-            size: args.data.length
+            size: args.data.length,
+            onUpdate: args.onUpdate
         }, renderFrameForArrayItem));
 
 const getRoot = () => document.getElementById("root");

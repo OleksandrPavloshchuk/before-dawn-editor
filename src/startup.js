@@ -4,7 +4,9 @@ document.addEventListener('DOMContentLoaded', () => render({
     path: [],
     name: "person",
     schema: schema,
-    data: data
+    data: data,
+    root: data,
+    onUpdate: (obj) => { console.log("onUpdate", obj);}
 }));
 
 /*
@@ -26,7 +28,7 @@ const schema = {
         item: {
             type: "array",
             item: {
-                type: "staticText"
+                type: "text"
             }
         }
     }
@@ -59,23 +61,23 @@ const data = {
 const schema = {
     type: "struct",
     properties: {
-        id: {type: "staticText"},
-        name: {type: "staticText"},
-        birthday: {type: "staticText"},
+        id: {type: "text"},
+        name: {type: "text"},
+        birthday: {type: "text"},
         address: {
             type: "struct",
             properties: {
-                country: {type: "staticText"},
-                city: {type: "staticText"},
-                street: {type: "staticText"},
+                country: {type: "text"},
+                city: {type: "text"},
+                street: {type: "text"},
                 tags: {
                     type: "array",
-                    item: {type: "staticText"}
+                    item: {type: "text"}
                 },
                 field1: {
                     type: "struct",
                     properties: {
-                        comment: {type: "staticText"}
+                        comment: {type: "text"}
                     }
                 },
                 field2: {
@@ -83,7 +85,7 @@ const schema = {
                     item: {
                         type: "struct",
                         properties: {
-                            dir: {type: "staticText"}
+                            dir: {type: "text"}
                         }
                     }
                 }
