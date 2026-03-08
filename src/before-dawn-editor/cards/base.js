@@ -1,51 +1,46 @@
 import {div, span, render, elem, setByPath} from "../main.js";
 
-export const cardWithTitle = (args, renderFrame) => renderFrame(args, createContent(args));
+export const card = (ctx, renderFrame) => renderFrame(ctx, createContent(ctx));
 
-export const cardTitle = (args) => div({"class": "title"}, [args.name]);
+export const cardTitle = (ctx) => div({"class": "title"}, [ctx.name]);
 
 //---
 
 // TODO show a simple text for a while. Use inputs in the future
-const createContent = (args) =>  {
-    switch (args.schema.type) {
-        case "struct": return structContent(args);
-        case "text": return textContent(args);
-        case "array": return arrayContent(args);
+const createContent = (ctx) =>  {
+    switch (ctx.schema.type) {
+        case "struct": return structContent(ctx);
+        case "text": return textContent(ctx);
+        case "array": return arrayContent(ctx);
         default:
             // TODO render content
-            return JSON.stringify(args.schema);
+            return JSON.stringify(ctx.schema);
     }
 };
 
 const ARROW_DOWN = '\u25BE';
 
-const structContent = (args) => {
-    const downLink = span({"class": "link"}, ["{ " + ARROW_DOWN + " }"]);
-    return div({onClick: () => render(args)}, [downLink]);
-}
+const structContent = (ctx) =>
+    drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"]));
 
-const arrayContent = (args) => {
-    const size = args.data.length;
-    const downLink = span({ "class": "link"}, ["[ " + size + " " + ARROW_DOWN + " ]"]);
-    return div({onClick: () => render(args)}, [downLink]);
-}
+const arrayContent = (ctx) =>
+    drillLinkContent(ctx, span({ "class": "link"}, ["[ " + ctx.data.length + " " + ARROW_DOWN + " ]"]));
 
-const textContent = (args) => {
+const textContent = (ctx) => {
 
     const onInput = (e) => {
-        args.data = e.target.value;
-        const namesChain = args.path.slice(1).map((ctx) => ctx.name).concat(args.name);
-        setByPath(args.root, namesChain, e.target.value);
+        ctx.data = e.target.value;
+        setByPath(ctx, e.target.value);
     };
 
     return elem("input", {
-        name: args.name,
-        id: args.name,
-        value: args.data,
+        name: ctx.name,
+        id: ctx.name,
+        value: ctx.data,
         type: "text",
         autocomplete: "false",
         onInput: onInput
     });
 }
 
+const drillLinkContent = (ctx, link) => div({onClick: () => render(ctx)}, [link]);

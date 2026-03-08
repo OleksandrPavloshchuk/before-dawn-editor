@@ -1,7 +1,7 @@
 import {div} from "../main.js";
 import {cardTitle} from "./base.js";
 
-export const renderFrameForStructItem = (args, content) => div(
+export const renderFrameForStructItem = (ctx, content) => div(
     {"class": "item"},
-    [cardTitle(args), div({"class": "content"}, [content])]
+    [cardTitle(ctx), div({"class": "content"}, [content])]
 );

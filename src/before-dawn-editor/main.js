@@ -1,10 +1,10 @@
-import {cardWithTitle} from "./cards/base.js";
+import {card} from "./cards/base.js";
 import {insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
 import {renderFrameForStructItem} from "./cards/structFrame.js";
 
-export const render = (args) => {
+export const render = (ctx) => {
     getRoot().replaceChildren();
-    getRoot().appendChild(convertSchemaToComponent(args));
+    getRoot().appendChild(convertSchemaToComponent(ctx));
 }
 
 export const elem = (tag, attributes = {}, children = []) => {
@@ -25,10 +25,11 @@ export const action = (text, title, command) => span({
 export const getByPath = (obj, path) =>
     path.reduce((acc, key) => acc?.[key], obj);
 
-export const setByPath = (obj, path, value) => {
+export const setByPath = (ctx, value) => {
+    const path = ctx.path.slice(1).map((c) => c.name).concat(ctx.name);
     const last = path[path.length - 1];
     const parent = path.slice(0, -1)
-        .reduce((acc, key) => acc?.[key], obj);
+        .reduce((acc, key) => acc?.[key], ctx.root);
 
     parent[last] = value;
 };
@@ -63,39 +64,39 @@ const raiseError = (error) => {
     console.log("ERROR", error);
 }
 
-const convertSchemaToComponent = (args) => {
-    if (!args || !args.schema) {
+const convertSchemaToComponent = (ctx) => {
+    if (!ctx || !ctx.schema) {
         raiseError("No schema of data");
         return;
     }
 
-    const chainDiv = div({"class": "chain"}, createCardArray(args));
+    const chainDiv = div({"class": "chain"}, createCardArray(ctx));
     const areaDiv = div({"class": "area vertical-gap"}, [
-        createStartDiv(args), chainDiv, createEndDiv(args)
+        createStartDiv(ctx), chainDiv, createEndDiv(ctx)
     ]);
 
     return div({"class": "bde-component"}, [
-        navigationDiv(args.path),
-        titleDiv(args),
+        navigationDiv(ctx.path),
+        titleDiv(ctx),
         areaDiv
     ]);
 
 };
 
-const createCardArray = (args) => {
-    switch (args.schema.type) {
+const createCardArray = (ctx) => {
+    switch (ctx.schema.type) {
         case "struct":
-            return structCards(args);
+            return structCards(ctx);
         case "array":
-            return arrayCards(args);
+            return arrayCards(ctx);
         default:
             // TODO
             return ["TODO implement this"];
     }
 }
 
-const createStartDiv = (args) => {
-    switch (args.schema.type) {
+const createStartDiv = (ctx) => {
+    switch (ctx.schema.type) {
         case "struct":
             return div({"class": "aside right"}, [
                 span({"class": "big"}, ["{"])
@@ -110,15 +111,15 @@ const createStartDiv = (args) => {
     }
 }
 
-const createEndDiv = (args) => {
-    switch (args.schema.type) {
+const createEndDiv = (ctx) => {
+    switch (ctx.schema.type) {
         case "struct":
             return div({"class": "aside left"}, [
                 span({"class": "big"}, ["}"])
             ]);
         case "array":
             return div({"class": "aside left"}, [
-                insertItemBefore(args.data.length),
+                insertItemBefore(ctx.data.length),
                 span({"class": "big"}, ["]"])
             ]);
         default:
@@ -128,45 +129,46 @@ const createEndDiv = (args) => {
 
 
 const navigationDiv = (path) => {
-    const toSpan = (args) =>
-        span({"onClick": () => render(args), "class": "item link"},
-            [args.name]);
+    const toSpan = (ctx) =>
+        span({"onClick": () => render(ctx), "class": "item link"},
+            [ctx.name]);
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
 
-const titleDiv = (args) => {
-    const doUpdate = action(
-        "Show object on console",
-        "",
-        () => {args.onUpdate(args.root);});
-    return div({"class": "title vertical-gap"}, [
-        span({"class": "large"}, [args.name]),
-        doUpdate]);
+const titleDiv = (ctx) => {
+    const name = span({"class": "large"}, [ctx.name]);
+    const children = ctx.onUpdate
+        ? [name, action(
+            "Show object on console",
+            "",
+            () => {
+                ctx.onUpdate(ctx.root);
+            })]
+        : [name];
+    return div({"class": "title vertical-gap"}, children);
 }
 
-const newPath = (args) => [...args.path, args];
+const newPath = (ctx) => [...ctx.path, ctx];
 
-const structCards = (args) => Object.entries(args.schema.properties)
+const structCards = (ctx) => Object.entries(ctx.schema.fields)
     .map(([name, schema]) =>
-        cardWithTitle({
-            root: args.root,
+        card({
+            root: ctx.root,
             schema,
             name,
-            path: newPath(args),
-            data: args.data[name],
-            onUpdate: args.onUpdate
+            path: newPath(ctx),
+            data: ctx.data[name]
         }, renderFrameForStructItem));
 
-const arrayCards = (args) => args.data
+const arrayCards = (ctx) => ctx.data
     .map((data, index) =>
-        cardWithTitle({
-            root: args.root,
-            schema: args.schema.item,
+        card({
+            root: ctx.root,
+            schema: ctx.schema.item,
             name: `${index}`,
-            path: newPath(args),
+            path: newPath(ctx),
             data,
-            size: args.data.length,
-            onUpdate: args.onUpdate
+            size: ctx.data.length
         }, renderFrameForArrayItem));
 
 const getRoot = () => document.getElementById("root");

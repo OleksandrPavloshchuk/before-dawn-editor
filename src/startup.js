@@ -60,13 +60,13 @@ const data = {
 
 const schema = {
     type: "struct",
-    properties: {
+    fields: {
         id: {type: "text"},
         name: {type: "text"},
         birthday: {type: "text"},
         address: {
             type: "struct",
-            properties: {
+            fields: {
                 country: {type: "text"},
                 city: {type: "text"},
                 street: {type: "text"},
@@ -76,7 +76,7 @@ const schema = {
                 },
                 field1: {
                     type: "struct",
-                    properties: {
+                    fields: {
                         comment: {type: "text"}
                     }
                 },
@@ -84,7 +84,7 @@ const schema = {
                     type: "array",
                     item: {
                         type: "struct",
-                        properties: {
+                        fields: {
                             dir: {type: "text"}
                         }
                     }

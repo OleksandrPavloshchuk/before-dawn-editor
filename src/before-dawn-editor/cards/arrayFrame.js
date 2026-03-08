@@ -1,9 +1,9 @@
 import {action, div, span, elem} from "../main.js";
 import {cardTitle} from "./base.js";
 
-export const renderFrameForArrayItem = (args, content) => div(
+export const renderFrameForArrayItem = (ctx, content) => div(
     {"class": "item"},
-    [cardTitle(args), table(args, content)]
+    [cardTitle(ctx), table(ctx, content)]
 );
 
 export const insertItemBefore = (index) => action(
@@ -18,9 +18,9 @@ export const insertItemAfter = (index) => action(
 
 
 // ---
-const table = (args, content) => {
-    const size = args.size;
-    const index = parseInt(args.name);
+const table = (ctx, content) => {
+    const size = ctx.size;
+    const index = parseInt(ctx.name);
 
     const LEFT = "\u21D0";
     const RIGHT = '\u21D2';
