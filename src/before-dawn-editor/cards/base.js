@@ -1,10 +1,10 @@
 import {div, span, render} from "../main.js";
 
-export const card = (children) => div({"class": "bde-item"}, children);
+export const card = (children) => div({"class": "item"}, children);
 
 export const cardWithTitle = (args, renderFrame) => renderFrame(args, createContent(args));
 
-export const cardTitle = (args) => div({"class": "bde-item-header"}, [args.name]);
+export const cardTitle = (args) => div({"class": "title"}, [args.name]);
 
 //---
 
@@ -23,13 +23,13 @@ const createContent = (args) =>  {
 const ARROW_DOWN = '\u25BE';
 
 const structContent = (args) => {
-    const downLink = span({}, ["{ " + ARROW_DOWN + " }"]);
-    return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
+    const downLink = span({"class": "link"}, ["{ " + ARROW_DOWN + " }"]);
+    return div({onClick: () => render(args)}, [downLink]);
 }
 
 const arrayContent = (args) => {
     const size = args.data.length;
-    const downLink = span({}, ["[ " + size + " " + ARROW_DOWN + " ]"]);
-    return div({onClick: () => render(args), "class": "bde-drill-down"}, [downLink]);
+    const downLink = span({ "class": "link"}, ["[ " + size + " " + ARROW_DOWN + " ]"]);
+    return div({onClick: () => render(args)}, [downLink]);
 }
 

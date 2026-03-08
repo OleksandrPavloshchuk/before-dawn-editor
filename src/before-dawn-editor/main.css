@@ -1,33 +1,93 @@
 body {
-    font-family: "Roboto Light", sans-serif;
+    font-family: "Roboto Thin", sans-serif;
     font-size: 12pt;
 }
 
-.bde-root {
+.bde-component {
     padding: 1em;
 }
 
-.bde-header {
-    padding: 0.5em;
-    font-size: 14pt;
+/* Common */
+.link {
+    color: green;
+    cursor: pointer;
+}
+
+.link:hover {
+    color: mediumseagreen;
+    text-decoration: underline;
+}
+
+.vertical-gap {
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+}
+
+.left {
+    text-align: left;
+}
+
+.right {
+    text-align: right;
+}
+
+/* Title */
+.bde-component > .title {
+    padding-top: 0.3em;
+    padding-bottom: 0.3em;
+    font-size: large;
     font-weight: bold;
 }
 
-.bde-path {
-    padding: 0.5em;
-    font-size: 10pt;
+/* Navigation */
+.bde-component > .navigation {
 }
 
-.bde-field {
-    padding: 10px;
-    background-color: aliceblue;
+.bde-component > .navigation > .item {
+    padding-right: 0.3em;
+}
+
+.bde-component > .navigation > .item:before {
+    content: "/";
+}
+
+/* Area */
+.bde-component > .area {
+    background-color: whitesmoke;
+    display: grid;
+    grid-template-columns: 30px 1fr 30px;
+}
+
+/* Area aside */
+.bde-component > .area > .aside {
+    display: flex;
+    align-items: center;
+}
+
+.bde-component > .area > .aside.left {
+    justify-content: left;
+}
+
+.bde-component > .area > .aside.right {
+    justify-content: right;
+}
+
+.bde-component > .area > .aside > .big {
+    font-weight: bold;
+    font-size: x-large;
+}
+
+/* Chain */
+.bde-component > .area > .chain {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 10px;
+    gap: 6px;
+    padding: 6px;
 }
 
-.bde-item {
-    background-color: whitesmoke;
+/* Chain item */
+.bde-component > .area > .chain > .item {
+    background-color: white;
     border-radius: 3px;
     padding: 6px;
     box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
@@ -35,52 +95,14 @@ body {
     vertical-align: middle;
 }
 
-.bde-item:hover {
-    background-color: honeydew;
-}
-
-.bde-big {
-    font-size: 20pt;
-    vertical-align: middle;
-}
-
-.bde-item-header {
+/* Chain item title */
+.bde-component > .area > .chain > .item > .title {
     font-weight: bold;
     text-align: center;
+    padding-bottom: 0.5em;
 }
 
-.bde-item-with-header {
-    display: grid;
-    grid-template-columns: 1fr;
-    gap: 5px;
-}
-
-.bde-item-in-array {
-    display: grid;
-    grid-template-columns: 1fr 20fr 1fr;
-    gap: 5px;
-}
-
-.bde-drill-down {
-    cursor: pointer;
-    color: darkcyan;
-}
-
-.bde-drill-down:hover {
-    color: darkturquoise;
-}
-
-.bde-back {
-    color: darkcyan;
-    padding-left: 0.5em;
-    cursor: pointer;
-}
-
-.bde-back:before {
-    content: "/";
-}
-
-.bde-back:hover {
-    color: darkturquoise;
-    text-decoration: underline;
+/* Chain item table for array */
+.bde-component > .area > .chain > .item > table {
+    width: 100%;
 }
