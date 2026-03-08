@@ -9,13 +9,16 @@ body {
 
 /* Common */
 .link {
-    color: green;
+    padding: 3px;
+    border-radius: 3px;
+    color: #3366CC;
     cursor: pointer;
+    border: 1px solid rgba(0, 0, 0, 0);
 }
 
 .link:hover {
-    color: mediumseagreen;
-    text-decoration: underline;
+    color: #66CCFF;
+    border: 1px solid #66CCFF;
 }
 
 .vertical-gap {
@@ -65,11 +68,11 @@ body {
 }
 
 .bde-component > .area > .aside.left {
-    justify-content: left;
+    justify-content: flex-start;
 }
 
 .bde-component > .area > .aside.right {
-    justify-content: right;
+    justify-content: flex-end;
 }
 
 .bde-component > .area > .aside > .big {
@@ -81,8 +84,8 @@ body {
 .bde-component > .area > .chain {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
-    gap: 6px;
-    padding: 6px;
+    gap: 8px;
+    padding: 8px;
 }
 
 /* Chain item */
@@ -90,7 +93,7 @@ body {
     background-color: white;
     border-radius: 3px;
     padding: 6px;
-    box-shadow: 3px 3px 3px rgba(0, 0, 0, 0.25);
+    border: 1px solid #e5e5e5;
     text-align: center;
     vertical-align: middle;
 }

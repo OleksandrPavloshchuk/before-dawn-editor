@@ -6,9 +6,15 @@ export const renderFrameForArrayItem = (args, content) => div(
     [cardTitle(args), table(args, content)]
 );
 
-export const insertItemBefore = (index) => action("+", () => alert(`TODO insert before ${index}`));
+export const insertItemBefore = (index) => action(
+    "+",
+    `Add new item before ${index}`,
+    () => alert(`TODO insert before ${index}`));
 
-export const insertItemAfter = (index) => action("+", () => alert(`TODO insert after ${index}`));
+export const insertItemAfter = (index) => action(
+    "+",
+    `Add new item after ${index}`,
+    () => alert(`TODO insert after ${index}`));
 
 
 // ---
@@ -50,13 +56,19 @@ const tr = (cells) => elem("tr", {},
     })
 );
 
-const removeItem = (index) => action("-", () => alert(`TODO remove ${index}`));
+const removeItem = (index) => action(
+    "-",
+    `Remove item ${index}`,
+    () => alert(`TODO remove ${index}`));
 
 const swapItems = (text, index1, index2, size) => {
     if (index1 < 0 || index2 === size) {
         return empty();
     }
-    return action(text, () => alert(`TODO swap items ${index1} and ${index2}`));
+    return action(
+        text,
+        `Swap items ${index1} and ${index2}`,
+        () => alert(`TODO swap items ${index1} and ${index2}`));
 }
 
 const empty = () => span({}, [""]);

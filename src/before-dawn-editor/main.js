@@ -16,9 +16,10 @@ export const elem = (tag, attributes = {}, children = []) => {
 
 export const div = (attributes = {}, children = []) => elem("div", attributes, children);
 export const span = (attributes = {}, children = []) => elem("span", attributes, children);
-export const action = (text, command) => span({
+export const action = (text, title, command) => span({
     "onClick": command,
-    "class": "link"
+    "class": "link",
+    "title": title
 }, [text]);
 
 export const getByPath = (obj, path) =>
