@@ -172,17 +172,12 @@ path
 Show object on console   Available only at the root level. Calls
 `onUpdate()` with the root object
 
-⬇️                       Navigate to a nested structure
-
-(array length) ⬇️        Navigate to a nested array
-
-\+                       Insert a new array item
-
-\-                       Remove the current array item
-
-⬅️                       Move the current array item left
-
-➡️                       Move the current array item right
+* ⬇️                       Navigate to a nested structure
+* (array length) ⬇️        Navigate to a nested array
+* \+                       Insert a new array item
+* \-                       Remove the current array item
+* ⬅️                       Move the current array item left
+* ➡️                       Move the current array item right
 -----------------------------------------------------------------------
 
 ------------------------------------------------------------------------
@@ -199,10 +194,10 @@ Each schema entry has the form:
 
 Property     Description
   ------------ ---------------------------------------------------------
-**type**     Field type (`struct`, `array`, `text`, `staticText`, `number`, `boolean`, `date`, `dateTime`, `password`, `staticList` )
-**fields**   Nested schema definition (only for `struct`)
-**item**     Schema definition for array elements (only for `array`)
-**values**   Options as text constants (only for `staticList`)
+* **type**     Field type (`struct`, `array`, `text`, `staticText`, `number`, `boolean`, `date`, `dateTime`, `password`, `staticList` )
+* **fields**   Nested schema definition (only for `struct`)
+* **item**     Schema definition for array elements (only for `array`)
+* **values**   Options as text constants (only for `staticList`)
 
 ------------------------------------------------------------------------
 
@@ -329,10 +324,11 @@ Planned features:
 9. (TODO set it on the beginning) "Duplicate current item" for array
 10. (TODO set it on the beginning) Copy JSON path to the node 
 11. (TODO set it on the beginning) Collapse all, expand all, collapse all excepting current.
-12. (TODO set it on the beginning) Reset to default values. 
-13. Plugins for importing content in MD, RTF, DOC, DOCX, XLSX, PPTS formats. 
-14. Import of signed content. 
-15. Signing of content during publishing.
+12. (TODO set it on the beginning) Reset to default values.
+13. (TODO set it the 2nd) Set the order of field on the UI. 
+14. Plugins for importing content in MD, RTF, DOC, DOCX, XLSX, PPTS formats. 
+15. Import of signed content.
+16. Signing of content during publishing.
 
 ------------------------------------------------------------------------
 

@@ -1,41 +1,43 @@
 import {render} from "./before-dawn-editor/main.js";
 
-document.addEventListener('DOMContentLoaded', () => render({
-    path: [],
-    name: "Demo",
-    schema: schema,
-    data: data,
-    root: data,
-    onUpdate: (obj) => {
-        console.log("onUpdate", obj);
-        console.log("serialized", JSON.stringify(obj));
-    }
-}));
+import {personSample} from "./samples/person.js";
+import {matrixSample} from "./samples/matrix.js";
 
-const schema = {
-    type: "struct",
-    fields: {
-        id: {type: "number"},
-        comment: {type: "staticText"},
-        birthday: {type: "date"},
-        thisMoment: {type: "dateTime"},
-        name: {type: "text"},
-        password: {type: "password"},
-        readOnly: {type: "boolean"},
-        type: {
-            type: "staticList",
-            values: ["ADMIN", "WRITER", "READER"]
-        }
+const toContext = (name, sample) => {
+    return {
+        name,
+        schema: sample.schema,
+        data: sample.data,
+        root: sample.data
     }
-};
+}
 
-const data = {
-    id: 1024,
-    name: "Name sample",
-    readOnly: true,
-    type: "ADMIN",
-    birthday: "2000-06-12",
-    comment: "This is comment sample",
-    password: "password",
-    thisMoment: "2026-11-05T17:10"
-};
+const contexts = [
+    toContext("person", personSample),
+    toContext("matrix", matrixSample)
+];
+
+document
+    .getElementById("personSample")
+    .addEventListener( "click", (e) => {
+        e.preventDefault();
+        renderSample(0);
+    });
+document
+    .getElementById("matrixSample")
+    .addEventListener( "click", (e) => {
+        e.preventDefault();
+        renderSample(1);
+    });
+
+const renderSample = (index) => {
+    const ctx = contexts[index];
+    if (ctx) {
+        ctx.path = [];
+        ctx.onUpdate = (obj) => {
+            console.log("onUpdate", obj);
+            console.log("serialized", JSON.stringify(obj));
+        };
+        render(ctx);
+    }
+}

@@ -26,11 +26,13 @@ export const getByPath = (obj, path) =>
     path.reduce((acc, key) => acc?.[key], obj);
 
 export const setByPath = (ctx, value) => {
-    const path = ctx.path.slice(1).map((c) => c.name).concat(ctx.name);
+    const path = ctx.path
+        .slice(1)
+        .map((c) => c.name).concat(ctx.name);
     const last = path[path.length - 1];
-    const parent = path.slice(0, -1)
+    const parent = path
+        .slice(0, -1)
         .reduce((acc, key) => acc?.[key], ctx.root);
-
     parent[last] = value;
 };
 
