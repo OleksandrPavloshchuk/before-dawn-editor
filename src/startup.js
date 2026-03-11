@@ -21,16 +21,19 @@ const schema = {
         thisMoment: {type: "dateTime"},
         name: {type: "text"},
         password: {type: "password"},
-        readOnly: {type: "text"},
-        type: {type: "text"}
+        readOnly: {type: "boolean"},
+        type: {
+            type: "staticList",
+            values: ["ADMIN", "WRITER", "READER"]
+        }
     }
 };
 
 const data = {
     id: 1024,
     name: "Name sample",
-    readOnly: "true",
-    type: "ADMIN | WRITER | READER",
+    readOnly: true,
+    type: "ADMIN",
     birthday: "2000-06-12",
     comment: "This is comment sample",
     password: "password",

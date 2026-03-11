@@ -199,9 +199,10 @@ Each schema entry has the form:
 
 Property     Description
   ------------ ---------------------------------------------------------
-**type**     Field type (`struct`, `array`, `text`)
+**type**     Field type (`struct`, `array`, `text`, `staticText`, `number`, `boolean`, `date`, `dateTime`, `password`, `staticList` )
 **fields**   Nested schema definition (only for `struct`)
 **item**     Schema definition for array elements (only for `array`)
+**values**   Options as text constants (only for `staticList`)
 
 ------------------------------------------------------------------------
 
@@ -211,9 +212,9 @@ Property     Description
 {
   "type": "struct",
   "fields": {
-    "id": { "type": "text" },
+    "id": { "type": "number" },
     "name": { "type": "text" },
-    "birthday": { "type": "text" },
+    "birthday": { "type": "date" },
     "address": {
       "type": "struct",
       "fields": {
@@ -241,7 +242,6 @@ Property     Description
         }
       }
     }
-  }
 }
 ```
 
@@ -251,9 +251,9 @@ Property     Description
 
 ``` json
 {
-  "id": "1",
+  "id": 1,
   "name": "John Dow",
-  "birthday": "30.07.2000",
+  "birthday": "2000-04-16",
   "address": {
     "country": "UA",
     "city": "Kyiv",
@@ -278,50 +278,61 @@ Property     Description
 ------------------------------------------------------------------------
 
 # Example Project Structure
-
-    dist/
-     ├── before-dawn-editor/
-     │   ├── cards/
-     │   │   ├── arrayFrame.js
-     │   │   ├── base.js
-     │   │   └── structFrame.js
-     │   ├── main.css
-     │   └── main.js
-     ├── index.html
-     └── startup.js
-
+```
+dist
+├── before-dawn-editor
+│   ├── cards
+│   │   ├── arrayFrame.js
+│   │   ├── base.js
+│   │   └── structFrame.js
+│   ├── fields
+│   │   ├── checkBox.js
+│   │   ├── date.js
+│   │   ├── dateTime.js
+│   │   ├── number.js
+│   │   ├── password.js
+│   │   ├── staticSelect.js
+│   │   ├── staticText.js
+│   │   └── text.js
+│   ├── main.css
+│   └── main.js
+├── index.html
+└── startup.js
+```
 ------------------------------------------------------------------------
 
 # Roadmap
 
+Implemented:
+1. (2026/03/11) Inputs for numbers, dates, timestamps, checkboxes, and dropdowns
+
 Planned features:
 
-1.  Inputs for numbers, dates, timestamps, checkboxes, and dropdowns
-2.  Extended array operations
-3.  Creation of structures from scratch
-4.  Export of serialized JSON
-5.  Basic validation:
+1. Extended array operations
+2. Creation of structures from scratch
+3. Export of serialized JSON
+4. Basic validation:
     -   required fields
     -   non‑empty values
     -   maximum string/array length
     -   regular expressions
     -   numeric ranges
-6.  Reporting validation errors to the container component
-7.  Importing nodes with validation
-8.  Advanced "drill‑down" controls:
+5. Reporting validation errors to the container component
+6. Importing nodes with validation
+7. Advanced "drill‑down" controls:
     -   textarea
     -   rich text editor
     -   geolocation selector
     -   URL selector with page preview
     -   YouTube video selector with preview
-9.  Dynamic controls that retrieve data from external web services
-10. (TODO set it on the beginning) "Duplicate current item" for array
-11. (TODO set it on the beginning) Copy JSON path to the node
-12. (TODO set it on the beginning) Collapse all, expand all, collapse all excepting current.
-13. (TODO set it on the beginning) Reset to default values.
-14. Plugins for importing content in MD, RTF, DOC, DOCX, XLSX, PPTS formats.
-15. Import of signed content.
-16. Signing of content during publishing.
+8. Dynamic controls that retrieve data from external web services9
+9. (TODO set it on the beginning) "Duplicate current item" for array
+10. (TODO set it on the beginning) Copy JSON path to the node 
+11. (TODO set it on the beginning) Collapse all, expand all, collapse all excepting current.
+12. (TODO set it on the beginning) Reset to default values. 
+13. Plugins for importing content in MD, RTF, DOC, DOCX, XLSX, PPTS formats. 
+14. Import of signed content. 
+15. Signing of content during publishing.
 
 ------------------------------------------------------------------------
 

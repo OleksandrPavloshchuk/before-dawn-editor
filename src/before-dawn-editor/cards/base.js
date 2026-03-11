@@ -5,6 +5,8 @@ import {numberContent} from "../fields/number.js";
 import {dateContent} from "../fields/date.js";
 import {dateTimeContent} from "../fields/dateTime.js";
 import {passwordContent} from "../fields/password.js";
+import {checkBoxContent} from "../fields/checkBox.js";
+import {staticSelectContent} from "../fields/staticSelect.js";
 
 export const card = (ctx, renderFrame) => renderFrame(ctx, createContent(ctx));
 
@@ -12,7 +14,6 @@ export const cardTitle = (ctx) => div({"class": "title"}, [ctx.name]);
 
 //---
 
-// TODO show a simple text for a while. Use inputs in the future
 const createContent = (ctx) =>  {
     switch (ctx.schema.type) {
         case "struct": return structContent(ctx);
@@ -23,6 +24,8 @@ const createContent = (ctx) =>  {
         case "dateTime": return dateTimeContent(ctx);
         case "staticText": return staticTextContent(ctx);
         case "number": return numberContent(ctx);
+        case "boolean": return checkBoxContent(ctx);
+        case "staticList": return staticSelectContent(ctx);
         default:
             // TODO render content
             return JSON.stringify(ctx.schema);

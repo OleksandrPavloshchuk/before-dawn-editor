@@ -44,6 +44,8 @@ const addAttribute = (elem, name, value) => {
         elem.addEventListener(eventName, value);
     } else {
         elem.setAttribute(name, value);
+        // TODO set for checkbox only
+        elem.checked = value;
     }
 }
 
