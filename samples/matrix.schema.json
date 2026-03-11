@@ -1,0 +1,12 @@
+{
+  "type": "array",
+  "item": {
+    "type": "array",
+    "item": {
+      "type": "array",
+      "item": {
+        "type": "text"
+      }
+    }
+  }
+}

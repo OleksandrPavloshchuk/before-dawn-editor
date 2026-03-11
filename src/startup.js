@@ -2,94 +2,37 @@ import {render} from "./before-dawn-editor/main.js";
 
 document.addEventListener('DOMContentLoaded', () => render({
     path: [],
-    name: "person",
+    name: "Demo",
     schema: schema,
     data: data,
     root: data,
-    onUpdate: (obj) => { console.log("onUpdate", obj);}
+    onUpdate: (obj) => {
+        console.log("onUpdate", obj);
+        console.log("serialized", JSON.stringify(obj));
+    }
 }));
-
-/*
-const data = [
-    [
-        [ "1.1.1", "1.1.2" ],
-        [ "1.2.1", "1.2.2" ]
-    ],
-    [
-        [ "2.1.1", "2.1.2" ],
-        [ "2.2.1", "2.2.2" ]
-    ]
-];
-
-const schema = {
-    type: "array",
-    item: {
-        type: "array",
-        item: {
-            type: "array",
-            item: {
-                type: "text"
-            }
-        }
-    }
-};
-*/
-
-
-const data = {
-    id: "1",
-    name: "John Dow",
-    birthday: "30.07.2000",
-    address: {
-        country: "UA",
-        city: "Kyiv",
-        street: "Metrologichna",
-        tags: [
-            "the 1st", "the 2nd", "the 3rd"
-        ],
-        field1: {
-            comment: "This is comment"
-        },
-        field2: [
-            {
-                dir: "dir-1"
-            }
-        ]
-    }
-};
 
 const schema = {
     type: "struct",
     fields: {
-        id: {type: "text"},
+        id: {type: "number"},
+        comment: {type: "staticText"},
+        birthday: {type: "date"},
+        thisMoment: {type: "dateTime"},
         name: {type: "text"},
-        birthday: {type: "text"},
-        address: {
-            type: "struct",
-            fields: {
-                country: {type: "text"},
-                city: {type: "text"},
-                street: {type: "text"},
-                tags: {
-                    type: "array",
-                    item: {type: "text"}
-                },
-                field1: {
-                    type: "struct",
-                    fields: {
-                        comment: {type: "text"}
-                    }
-                },
-                field2: {
-                    type: "array",
-                    item: {
-                        type: "struct",
-                        fields: {
-                            dir: {type: "text"}
-                        }
-                    }
-                }
-            }
-        }
+        password: {type: "password"},
+        readOnly: {type: "text"},
+        type: {type: "text"}
     }
-}
+};
+
+const data = {
+    id: 1024,
+    name: "Name sample",
+    readOnly: "true",
+    type: "ADMIN | WRITER | READER",
+    birthday: "2000-06-12",
+    comment: "This is comment sample",
+    password: "password",
+    thisMoment: "2026-11-05T17:10"
+};

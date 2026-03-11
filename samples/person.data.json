@@ -1,0 +1,21 @@
+{
+  "id": "1",
+  "name": "John Dow",
+  "birthday": "30.07.2000",
+  "address": {
+    "country": "UA",
+    "city": "Kyiv",
+    "street": "Metrologichna",
+    "tags": [
+      "the 1st", "the 2nd", "the 3rd"
+    ],
+    "field1": {
+      "comment": "This is comment"
+    },
+    "field2": [
+      {
+        "dir": "dir-1"
+      }
+    ]
+  }
+}

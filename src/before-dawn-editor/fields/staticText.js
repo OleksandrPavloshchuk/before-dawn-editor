@@ -1,0 +1,1 @@
+export const staticTextContent = (ctx) => ctx.data;
