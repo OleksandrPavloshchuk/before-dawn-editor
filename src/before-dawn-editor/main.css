@@ -22,6 +22,11 @@ body {
     border: 1px solid #66CCFF;
 }
 
+.link.action-danger:hover {
+    color: #cc3366;
+    border: 1px solid #cc3366;
+}
+
 .vertical-gap {
     padding-top: 0.3em;
     padding-bottom: 0.3em;

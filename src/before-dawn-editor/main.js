@@ -1,5 +1,5 @@
 import {card} from "./cards/base.js";
-import {insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
+import {insertItemAfter, insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
 import {renderFrameForStructItem} from "./cards/structFrame.js";
 
 export const render = (ctx) => {
@@ -16,10 +16,16 @@ export const elem = (tag, attributes = {}, children = []) => {
 
 export const div = (attributes = {}, children = []) => elem("div", attributes, children);
 export const span = (attributes = {}, children = []) => elem("span", attributes, children);
-export const action = (text, title, command) => span({
-    "onClick": command,
+export const action = (text, title, onClick) => span({
+    onClick,
     "class": "link",
-    "title": title
+    title
+}, [text]);
+
+export const actionDanger = (text, title, onClick) => span({
+    onClick,
+    "class": "link action-danger",
+    title
 }, [text]);
 
 export const getByPath = (obj, path) =>
@@ -108,7 +114,7 @@ const createStartDiv = (ctx) => {
         case "array":
             return div({"class": "aside right"}, [
                 span({"class": "big"}, ["["]),
-                insertItemBefore(0)
+                insertItemBefore(ctx, 0)
             ]);
         default:
             return div({}, []);
@@ -123,7 +129,7 @@ const createEndDiv = (ctx) => {
             ]);
         case "array":
             return div({"class": "aside left"}, [
-                insertItemBefore(ctx.data.length),
+                insertItemAfter(ctx, ctx.data.length-1),
                 span({"class": "big"}, ["]"])
             ]);
         default:
