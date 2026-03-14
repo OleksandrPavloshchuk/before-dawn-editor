@@ -23,8 +23,8 @@ body {
 }
 
 .link.action-danger:hover {
-    color: #cc3366;
-    border: 1px solid #cc3366;
+    color: #ff3370;
+    border: 1px solid #ff3370;
 }
 
 .vertical-gap {
@@ -48,9 +48,11 @@ body {
     align-items: center;
 }
 
-.bde-component > .title > .large {
+.bde-component > .title .large {
     font-size: x-large;
     font-weight: bold;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 /* Navigation */

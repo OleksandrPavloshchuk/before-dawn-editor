@@ -129,14 +129,13 @@ const createEndDiv = (ctx) => {
             ]);
         case "array":
             return div({"class": "aside left"}, [
-                insertItemAfter(ctx, ctx.data.length-1),
+                insertItemAfter(ctx, ctx.data.length - 1),
                 span({"class": "big"}, ["]"])
             ]);
         default:
             return div({}, []);
     }
 }
-
 
 const navigationDiv = (path) => {
     const toSpan = (ctx) =>
@@ -147,39 +146,101 @@ const navigationDiv = (path) => {
 
 const titleDiv = (ctx) => {
     const name = span({"class": "large"}, [ctx.name]);
-    const children = ctx.onUpdate
-        ? [name, action(
+    const titleWithNavigation = [];
+    if (ctx.left) {
+        const leftAction = action(
+            ctx.left.name,
+            "",
+            () => render(ctx.left));
+        titleWithNavigation.push(leftAction);
+    }
+    titleWithNavigation.push(name);
+    if (ctx.right) {
+        const rightAction = action(
+            ctx.right.name,
+            "",
+            () => render(ctx.right));
+        titleWithNavigation.push(rightAction);
+    }
+
+    const children = [];
+    children.push(div({}, [titleWithNavigation]));
+    if (ctx.onUpdate) {
+        const showObjectAction = action(
             "Show object on console",
             "",
-            () => {
-                ctx.onUpdate(ctx.root);
-            })]
-        : [name];
+            () => ctx.onUpdate(ctx.root));
+        children.push(showObjectAction);
+    }
     return div({"class": "title vertical-gap"}, children);
 }
 
 const newPath = (ctx) => [...ctx.path, ctx];
 
-const structCards = (ctx) => ctx.schema.fields
-    .map((field) =>
-        card({
-            root: ctx.root,
-            schema: field,
-            name: field.name,
-            path: newPath(ctx),
-            data: ctx.data[field.name]
-        }, renderFrameForStructItem));
+const structCards = (ctx) => {
+    const ctxs = ctx.schema.fields
+        .map((field) => {
+            return {
+                root: ctx.root,
+                schema: field,
+                name: field.name,
+                path: newPath(ctx),
+                data: ctx.data[field.name]
+            }
+        });
+    return convertCtxsToCard(ctxs, renderFrameForStructItem);
+};
 
-const arrayCards = (ctx) => ctx.data
-    .map((data, index) =>
-        card({
-            root: ctx.root,
-            schema: ctx.schema.item,
-            name: `${index}`,
-            path: newPath(ctx),
-            data,
-            size: ctx.data.length
-        }, renderFrameForArrayItem));
+const arrayCards = (ctx) => {
+    const ctxs = ctx.data
+        .map((data, index) => {
+            return {
+                root: ctx.root,
+                schema: ctx.schema.item,
+                name: `${index}`,
+                path: newPath(ctx),
+                data,
+                size: ctx.data.length
+            }
+        });
+    return convertCtxsToCard(ctxs, renderFrameForArrayItem);
+}
+
+const convertCtxsToCard = (ctxs, render) => {
+    return ctxs.map((ctx, index) => {
+        if (isComplex(ctx)) {
+            const leftCtx = findClosedLeftComplexCtx(ctxs, index);
+            if (leftCtx) {
+                ctx.left = leftCtx;
+            }
+            const rightCtx = findClosedRightComplexCtx(ctxs, index);
+            if (rightCtx) {
+                ctx.right = rightCtx;
+            }
+        }
+        return card(ctx, render);
+    });
+};
+
+const findClosedLeftComplexCtx = (ctxs, index) => {
+    for (let i = index - 1; i >= 0; i--) {
+        const ctx = ctxs[i];
+        if (isComplex(ctx)) {
+            return ctx;
+        }
+    }
+    return undefined;
+};
+
+const findClosedRightComplexCtx = (ctxs, index) => {
+    for (let i = index + 1; i < ctxs.length; i++) {
+        const ctx = ctxs[i];
+        if (isComplex(ctx)) {
+            return ctx;
+        }
+    }
+    return undefined;
+};
 
 const isComplex = (ctx) => ctx.schema.type === "struct" || ctx.schema.type === "array";
 

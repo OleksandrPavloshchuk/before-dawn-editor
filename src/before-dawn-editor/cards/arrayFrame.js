@@ -20,7 +20,10 @@ export const insertItemAfter = (ctx, index) => action(
 
 // ---
 const insertNewItemAt = (ctx, pos) => insertAt(ctx, structuredClone(ctx.schema.prototype), pos);
-const copyPasteItemAt = (ctx, src, pos) => insertAt(ctx, ctx.data[src], pos);
+const copyPasteItemAt = (ctx, src, pos) => {
+    const deepCopy = structuredClone(ctx.data[src]);
+    insertAt(ctx, deepCopy, pos);
+};
 
 const insertAt = (ctx, item, pos) => {
     ctx.data.splice(pos, 0, item);
