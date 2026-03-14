@@ -1,6 +1,6 @@
 export const arraySample = {
-    name: "array",
     schema: {
+        name: "array",
         type: "array",
         item: {type: "number"},
         prototype: 0

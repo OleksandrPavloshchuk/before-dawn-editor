@@ -160,14 +160,14 @@ const titleDiv = (ctx) => {
 
 const newPath = (ctx) => [...ctx.path, ctx];
 
-const structCards = (ctx) => Object.entries(ctx.schema.fields)
-    .map(([name, schema]) =>
+const structCards = (ctx) => ctx.schema.fields
+    .map((field) =>
         card({
             root: ctx.root,
-            schema,
-            name,
+            schema: field,
+            name: field.name,
             path: newPath(ctx),
-            data: ctx.data[name]
+            data: ctx.data[field.name]
         }, renderFrameForStructItem));
 
 const arrayCards = (ctx) => ctx.data
@@ -180,5 +180,7 @@ const arrayCards = (ctx) => ctx.data
             data,
             size: ctx.data.length
         }, renderFrameForArrayItem));
+
+const isComplex = (ctx) => ctx.schema.type === "struct" || ctx.schema.type === "array";
 
 const getRoot = () => document.getElementById("root");

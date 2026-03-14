@@ -1,63 +1,62 @@
 export const personSample = {
-    name: "person",
     schema: {
+        name: "person",
         type: "struct",
-        fields: {
-            id: {type: "number"},
-            name: {type: "text"},
-            birthday: {"type": "date"},
-            address: {
+        fields: [
+            {
+                name: "id",
+                type: "number"
+            },
+            {   name: "firstName",
+                type: "text"
+            },
+            {
+                name: "secondName",
+                type: "text"
+            },
+            {
+                name: "birthday",
+                type: "date"
+            },
+            {
+                name: "address",
                 type: "struct",
-                fields: {
-                    country: {
-                        type: "staticList",
-                        values: ["UA", "US", "GE", "PL"]
-                    },
-                    city: {type: "text"},
-                    street: {type: "text"},
-                    tags: {
-                        type: "array",
-                        item: {type: "text"}
-                    },
-                    field1: {
-                        type: "struct",
-                        fields: {
-                            comment: {type: "text"}
-                        }
-                    },
-                    field2: {
-                        type: "array",
-                        item: {
-                            type: "struct",
-                            fields: {
-                                "dir": {"type": "text"}
-                            }
-                        }
-                    }
-                }
-            }
-        }
-    },
-    data:
-        {
-            id: "1",
-            name: "John Dow",
-            birthday: "2000-07-12",
-            address: {
-                country: "UA",
-                city: "Kyiv",
-                street: "Metrologichna",
-                tags: [
-                    "the 1st", "the 2nd", "the 3rd"
-                ],
-                field1: {
-                    comment: "This is comment"
-                },
-                field2: [
+                fields: [
                     {
-                        dir: "dir-1"
+                        name: "country",
+                        type: "staticList",
+                        values: ["US", "UK", "GE", "FR", "UA", "PL"]
+                    },
+                    {
+                        name: "city",
+                        type: "text"
+                    },
+                    {
+                        name: "street",
+                        type: "text"
                     }
                 ]
+            },
+            {
+                name: "emails",
+                type: "array",
+                item: {
+                    type: "email"
+                },
+                prototype: "user@name.com"
             }
-        }
+        ]
+    },
+    data: {
+        id: "1",
+        firstName: "John",
+        secondName: "Dow",
+        birthday: "2000-07-12",
+        address: {
+            country: "US",
+            city: "Atlanta",
+            street: "Peach str. 12/14"
+        },
+        emails: []
+    }
 };

@@ -1,23 +1,17 @@
 export const matrixSample = {
-    name: "matrix",
     schema: {
+        name: "matrix",
         type: "array",
         item: {
             type: "array",
             item: {
                 type: "array",
-                item: { type: "number" }
-            }
-        }
+                item: { type: "number" },
+                prototype: 0
+            },
+            prototype: []
+        },
+        prototype: []
     },
-    data: [
-        [
-            [111, 112],
-            [121, 122]
-        ],
-        [
-            [211, 212],
-            [221, 222]
-        ]
-    ]
+    data: []
 };

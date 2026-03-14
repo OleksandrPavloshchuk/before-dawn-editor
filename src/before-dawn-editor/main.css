@@ -122,9 +122,10 @@ body {
 }
 
 /* Text input */
-.bde-component input[type="text"],
-select,
+.bde-component select,
+input[type="text"],
 input[type="password"],
+input[type="email"],
 input[type="date"],
 input[type="number"],
 input[type="datetime-local"],
@@ -144,9 +145,10 @@ input[type="checkbox"] {
 }
 
 /* Focus */
-.bde-component input[type="text"]:focus,
-select:focus,
+.bde-component select:focus,
+input[type="text"]:focus,
 input[type="password"]:focus,
+input[type="email"]:focus,
 input[type="date"]:focus,
 input[type="number"]:focus,
 input[type="datetime-local"]:focus,

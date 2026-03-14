@@ -194,8 +194,9 @@ Each schema entry has the form:
 
 Property     Description
   ------------ ---------------------------------------------------------
+* **name**     Name of field (only for `struct`)
 * **type**     Field type (`struct`, `array`, `text`, `staticText`, `number`, `boolean`, `date`, `dateTime`, `password`, `staticList` )
-* **fields**   Nested schema definition (only for `struct`)
+* **fields**   Nested array of fields (only for `struct`)
 * **item**     Schema definition for array elements (only for `array`)
 * **values**   Options as text constants (only for `staticList`)
 
@@ -292,6 +293,10 @@ dist
 │   ├── main.css
 │   └── main.js
 ├── index.html
+├── samples
+│   ├── array.js
+│   ├── matrix.js
+│   └── person.js
 └── startup.js
 ```
 ------------------------------------------------------------------------
@@ -300,35 +305,34 @@ dist
 
 Implemented:
 1. (2026/03/11) Inputs for numbers, dates, timestamps, checkboxes, and dropdowns
+2. (2026/03/14) Extended array operations
+3. (2026/03/14) "Duplicate current item" for array
 
 Planned features:
 
-1. Extended array operations
-2. Creation of structures from scratch
-3. Export of serialized JSON
-4. Basic validation:
+* Export of serialized JSON 
+* Basic validation:
     -   required fields
     -   non‑empty values
     -   maximum string/array length
     -   regular expressions
     -   numeric ranges
-5. Reporting validation errors to the container component
-6. Importing nodes with validation
-7. Advanced "drill‑down" controls:
+* Reporting validation errors to the container component
+* Importing nodes with validation
+* Advanced "drill‑down" controls:
     -   textarea
     -   rich text editor
     -   geolocation selector
     -   URL selector with page preview
     -   YouTube video selector with preview
-8. Dynamic controls that retrieve data from external web services9
-9. (TODO set it on the beginning) "Duplicate current item" for array
-10. (TODO set it on the beginning) Copy JSON path to the node 
-11. (TODO set it on the beginning) Collapse all, expand all, collapse all excepting current.
-12. (TODO set it on the beginning) Reset to default values.
-13. (TODO set it the 2nd) Set the order of field on the UI. 
-14. Plugins for importing content in MD, RTF, DOC, DOCX, XLSX, PPTS formats. 
-15. Import of signed content.
-16. Signing of content during publishing.
+* Dynamic controls that retrieve data from external web services9
+* (TODO set it on the beginning) Copy JSON path to the node
+* (TODO set it on the beginning) Collapse all, expand all, collapse all excepting current.
+* (TODO set it on the beginning) Reset to default values.
+* (TODO set it the 2nd) Set the order of field on the UI. 
+* Plugins for importing content in MD, RTF, DOC, DOCX, XLSX, PPTS formats. 
+* Import of signed content. 
+* Signing of content during publishing.
 
 ------------------------------------------------------------------------
 

@@ -7,6 +7,7 @@ import {dateTimeContent} from "../fields/dateTime.js";
 import {passwordContent} from "../fields/password.js";
 import {checkBoxContent} from "../fields/checkBox.js";
 import {staticSelectContent} from "../fields/staticSelect.js";
+import {emailContent} from "../fields/email.js";
 
 export const card = (ctx, renderFrame) => renderFrame(ctx, createContent(ctx));
 
@@ -26,6 +27,7 @@ const createContent = (ctx) =>  {
         case "number": return numberContent(ctx);
         case "boolean": return checkBoxContent(ctx);
         case "staticList": return staticSelectContent(ctx);
+        case "email": return emailContent(ctx);
         default:
             // TODO render content
             return JSON.stringify(ctx.schema);
