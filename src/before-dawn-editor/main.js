@@ -80,9 +80,9 @@ const convertSchemaToComponent = (ctx) => {
         return;
     }
 
-    const chainDiv = div({"class": "chain"}, createCardArray(ctx));
+    const middleDiv = div({"class": "chain"}, createCardArray(ctx));
     const areaDiv = div({"class": "area vertical-gap"}, [
-        createStartDiv(ctx), chainDiv, createEndDiv(ctx)
+        createStartDiv(ctx), middleDiv, createEndDiv(ctx)
     ]);
 
     return div({"class": "bde-component"}, [
@@ -144,7 +144,7 @@ const navigationDiv = (path) => {
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
 
-const titleDiv = (ctx) => {
+function titleWithNavigation(ctx) {
     const name = span({"class": "large"}, [ctx.name]);
     const titleWithNavigation = [];
     if (ctx.left) {
@@ -162,9 +162,12 @@ const titleDiv = (ctx) => {
             () => render(ctx.right));
         titleWithNavigation.push(rightAction);
     }
+    return titleWithNavigation;
+}
 
+const titleDiv = (ctx) => {
     const children = [];
-    children.push(div({}, [titleWithNavigation]));
+    children.push(div({}, [titleWithNavigation(ctx)]));
     if (ctx.onUpdate) {
         const showObjectAction = action(
             "Show object on console",

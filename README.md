@@ -275,6 +275,7 @@ dist
 │   │   ├── checkBox.js
 │   │   ├── date.js
 │   │   ├── dateTime.js
+│   │   ├── email.js
 │   │   ├── number.js
 │   │   ├── password.js
 │   │   ├── staticSelect.js
