@@ -21,6 +21,12 @@ export const action = (text, title, onClick) => span({
     "class": "link",
     title
 }, [text]);
+export const actionWithId = (id, text, title, onClick) => span({
+    onClick,
+    "class": "link",
+    title,
+    id
+}, [text]);
 
 export const actionDanger = (text, title, onClick) => span({
     onClick,
@@ -81,7 +87,8 @@ const convertSchemaToComponent = (ctx) => {
     }
 
     const middleDiv = div({"class": "chain"}, createCardArray(ctx));
-    const areaDiv = div({"class": "area vertical-gap"}, [
+    // TODO generate the unique ID
+    const areaDiv = div({"class": "area vertical-gap", "id": "control-area"}, [
         createStartDiv(ctx), middleDiv, createEndDiv(ctx)
     ]);
 

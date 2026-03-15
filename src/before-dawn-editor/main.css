@@ -55,6 +55,15 @@ body {
     margin-right: 5px;
 }
 
+.title > div {
+    display: flex;
+    align-items: center;
+}
+
+.title .link {
+    margin-left: auto;
+}
+
 /* Navigation */
 .bde-component > .navigation {
 }

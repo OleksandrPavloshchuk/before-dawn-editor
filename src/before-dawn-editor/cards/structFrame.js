@@ -1,7 +1,7 @@
 import {div} from "../main.js";
-import {cardTitle} from "./base.js";
+import {cardTitle, createCardId} from "./base.js";
 
 export const renderFrameForStructItem = (ctx, content) => div(
-    {"class": "item"},
+    {"class": "item", "id": createCardId(ctx)},
     [cardTitle(ctx), div({"class": "content"}, [content])]
 );
