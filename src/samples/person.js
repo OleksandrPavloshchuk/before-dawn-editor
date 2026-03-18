@@ -1,47 +1,47 @@
 export const personSample = {
     schema: {
         name: "person",
-        type: "struct",
+        type: "base/struct",
         fields: [
             {
                 name: "id",
-                type: "number"
+                type: "base/number"
             },
             {   name: "firstName",
-                type: "text"
+                type: "base/text"
             },
             {
                 name: "secondName",
-                type: "text"
+                type: "base/text"
             },
             {
                 name: "birthday",
-                type: "date"
+                type: "base/date"
             },
             {
                 name: "address",
-                type: "struct",
+                type: "base/struct",
                 fields: [
                     {
                         name: "country",
-                        type: "staticList",
+                        type: "base/staticList",
                         values: ["US", "UK", "GE", "FR", "UA", "PL"]
                     },
                     {
                         name: "city",
-                        type: "text"
+                        type: "base/text"
                     },
                     {
                         name: "street",
-                        type: "text"
+                        type: "base/text"
                     }
                 ]
             },
             {
                 name: "emails",
-                type: "array",
+                type: "base/array",
                 item: {
-                    type: "email"
+                    type: "base/email"
                 },
                 prototype: "user@name.com"
             }

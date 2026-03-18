@@ -1,5 +1,6 @@
-import {action, div, span, elem, render, actionDanger} from "../main.js";
+import {render} from "../main.js";
 import {cardTitle, createCardId} from "./base.js";
+import {action, actionDanger, div, elem, span} from "../dom.js";
 
 export const renderFrameForArrayItem = (ctx, content) => div(
     {"class": "item", "id": createCardId(ctx)},

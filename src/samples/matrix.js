@@ -1,12 +1,12 @@
 export const matrixSample = {
     schema: {
         name: "matrix",
-        type: "array",
+        type: "base/array",
         item: {
-            type: "array",
+            type: "base/array",
             item: {
-                type: "array",
-                item: { type: "number" },
+                type: "base/array",
+                item: { type: "base/number" },
                 prototype: 0
             },
             prototype: []

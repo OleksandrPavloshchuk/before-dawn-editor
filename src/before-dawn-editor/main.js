@@ -1,38 +1,14 @@
 import {card} from "./cards/base.js";
 import {insertItemAfter, insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
 import {renderFrameForStructItem} from "./cards/structFrame.js";
+import {action, div, getRoot, span} from "./dom.js";
+import {registerFields} from "./fieldsRegistry.js";
 
 export const render = (ctx) => {
+    registerFields();
     getRoot().replaceChildren();
     getRoot().appendChild(convertSchemaToComponent(ctx));
 }
-
-export const elem = (tag, attributes = {}, children = []) => {
-    const result = document.createElement(tag);
-    Object.entries(attributes).forEach(([name, value]) => addAttribute(result, name, value));
-    children.forEach((child) => appendChild(result, child));
-    return result;
-};
-
-export const div = (attributes = {}, children = []) => elem("div", attributes, children);
-export const span = (attributes = {}, children = []) => elem("span", attributes, children);
-export const action = (text, title, onClick) => span({
-    onClick,
-    "class": "link",
-    title
-}, [text]);
-export const actionWithId = (id, text, title, onClick) => span({
-    onClick,
-    "class": "link",
-    title,
-    id
-}, [text]);
-
-export const actionDanger = (text, title, onClick) => span({
-    onClick,
-    "class": "link action-danger",
-    title
-}, [text]);
 
 export const getByPath = (obj, path) =>
     path.reduce((acc, key) => acc?.[key], obj);
@@ -49,30 +25,6 @@ export const setByPath = (ctx, value) => {
 };
 
 // private functions
-
-const addAttribute = (elem, name, value) => {
-    if (name === "class") {
-        elem.className = value;
-    } else if (name.startsWith("on")) {
-        const eventName = name.slice(2).toLowerCase();
-        elem.addEventListener(eventName, value);
-    } else {
-        elem.setAttribute(name, value);
-        // TODO set for checkbox only
-        elem.checked = value;
-    }
-}
-
-const appendChild = (parent, child) => {
-    if (Array.isArray(child)) {
-        child.forEach(c => appendChild(parent, c));
-    } else {
-        const node = typeof child === "string"
-            ? document.createTextNode(child)
-            : child;
-        parent.appendChild(node);
-    }
-};
 
 const raiseError = (error) => {
     // TODO show error
@@ -102,9 +54,9 @@ const convertSchemaToComponent = (ctx) => {
 
 const createCardArray = (ctx) => {
     switch (ctx.schema.type) {
-        case "struct":
+        case "base/struct":
             return structCards(ctx);
-        case "array":
+        case "base/array":
             return arrayCards(ctx);
         default:
             // TODO
@@ -114,11 +66,11 @@ const createCardArray = (ctx) => {
 
 const createStartDiv = (ctx) => {
     switch (ctx.schema.type) {
-        case "struct":
+        case "base/struct":
             return div({"class": "aside right"}, [
                 span({"class": "big"}, ["{"])
             ]);
-        case "array":
+        case "base/array":
             return div({"class": "aside right"}, [
                 span({"class": "big"}, ["["]),
                 insertItemBefore(ctx, 0)
@@ -130,11 +82,11 @@ const createStartDiv = (ctx) => {
 
 const createEndDiv = (ctx) => {
     switch (ctx.schema.type) {
-        case "struct":
+        case "base/struct":
             return div({"class": "aside left"}, [
                 span({"class": "big"}, ["}"])
             ]);
-        case "array":
+        case "base/array":
             return div({"class": "aside left"}, [
                 insertItemAfter(ctx, ctx.data.length - 1),
                 span({"class": "big"}, ["]"])
@@ -252,6 +204,4 @@ const findClosedRightComplexCtx = (ctxs, index) => {
     return undefined;
 };
 
-const isComplex = (ctx) => ctx.schema.type === "struct" || ctx.schema.type === "array";
-
-const getRoot = () => document.getElementById("root");
+const isComplex = (ctx) => ctx.schema.type === "base/struct" || ctx.schema.type === "base/array";

@@ -1,13 +1,6 @@
-import {div, span, render, action, actionWithId} from "../main.js";
-import {textContent} from "../fields/text.js";
-import {staticTextContent} from "../fields/staticText.js";
-import {numberContent} from "../fields/number.js";
-import {dateContent} from "../fields/date.js";
-import {dateTimeContent} from "../fields/dateTime.js";
-import {passwordContent} from "../fields/password.js";
-import {checkBoxContent} from "../fields/checkBox.js";
-import {staticSelectContent} from "../fields/staticSelect.js";
-import {emailContent} from "../fields/email.js";
+import {render} from "../main.js";
+import {actionWithId, div, span} from "../dom.js";
+import {getFieldRenderer} from "../fieldsRegistry.js";
 
 export const card = (ctx, renderFrame) => renderFrame(ctx, createContent(ctx));
 
@@ -20,22 +13,18 @@ export const createCardId = (ctx) => `cardField_${ctx.name}`;
 //---
 
 const createContent = (ctx) =>  {
+    let renderer;
     switch (ctx.schema.type) {
-        case "struct": return structContent(ctx);
-        case "array": return arrayContent(ctx);
-        case "text": return textContent(ctx);
-        case "password": return passwordContent(ctx);
-        case "date": return dateContent(ctx);
-        case "dateTime": return dateTimeContent(ctx);
-        case "staticText": return staticTextContent(ctx);
-        case "number": return numberContent(ctx);
-        case "boolean": return checkBoxContent(ctx);
-        case "staticList": return staticSelectContent(ctx);
-        case "email": return emailContent(ctx);
+        case "base/struct":
+            renderer = structContent;
+            break;
+        case "base/array":
+            renderer = arrayContent;
+            break;
         default:
-            // TODO render content
-            return JSON.stringify(ctx.schema);
+            renderer = getFieldRenderer(ctx.schema.type);
     }
+    return renderer(ctx);
 };
 
 const ARROW_DOWN = '\u25BE';

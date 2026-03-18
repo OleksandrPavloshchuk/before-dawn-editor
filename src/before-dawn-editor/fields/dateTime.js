@@ -1,4 +1,5 @@
-import {elem, setByPath} from "../main.js";
+import {setByPath} from "../main.js";
+import {elem} from "../dom.js";
 
 export const dateTimeContent = (ctx) => {
 

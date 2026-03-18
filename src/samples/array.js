@@ -1,8 +1,8 @@
 export const arraySample = {
     schema: {
         name: "array",
-        type: "array",
-        item: {type: "number"},
+        type: "base/array",
+        item: {type: "base/number"},
         prototype: 0
     },
     data: []
