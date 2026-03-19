@@ -13,6 +13,8 @@ export const div = (attributes = {}, children = []) => elem("div", attributes, c
 
 export const span = (attributes = {}, children = []) => elem("span", attributes, children);
 
+export const input = (attributes = {}, children = []) => elem("input", attributes, children);
+
 export const action = (text, title, onClick) => span({
     onClick,
     "class": "link",

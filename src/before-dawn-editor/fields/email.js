@@ -1,19 +1,22 @@
 import {setByPath} from "../main.js";
-import {elem} from "../dom.js";
+import {input} from "../dom.js";
 
-export const emailContent = (ctx) => {
+export const emailField = {
+    name: "base/email",
+    type: "leaf",
+    renderAsCard: (ctx) => {
+        const onInput = (e) => {
+            ctx.data = e.target.value;
+            setByPath(ctx, e.target.value);
+        };
 
-    const onInput = (e) => {
-        ctx.data = e.target.value;
-        setByPath(ctx, e.target.value);
-    };
-
-    return elem("input", {
-        name: ctx.name,
-        id: ctx.name,
-        value: ctx.data,
-        type: "email",
-        autocomplete: "false",
-        onInput
-    });
+        return input( {
+            name: ctx.name,
+            id: ctx.name,
+            value: ctx.data,
+            type: "email",
+            autocomplete: "false",
+            onInput
+        });
+    }
 }

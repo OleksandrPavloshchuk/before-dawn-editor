@@ -1,12 +1,12 @@
-import {textContent} from "./fields/text.js";
-import {passwordContent} from "./fields/password.js";
-import {dateContent} from "./fields/date.js";
-import {dateTimeContent} from "./fields/dateTime.js";
-import {staticTextContent} from "./fields/staticText.js";
-import {numberContent} from "./fields/number.js";
-import {checkBoxContent} from "./fields/checkBox.js";
-import {staticSelectContent} from "./fields/staticSelect.js";
-import {emailContent} from "./fields/email.js";
+import {textField} from "./fields/text.js";
+import {passwordField} from "./fields/password.js";
+import {dateField} from "./fields/date.js";
+import {dateTimeField} from "./fields/dateTime.js";
+import {staticTextField} from "./fields/staticText.js";
+import {numberField} from "./fields/number.js";
+import {checkBoxField} from "./fields/checkBox.js";
+import {staticSelectField} from "./fields/staticSelect.js";
+import {emailField} from "./fields/email.js";
 
 const fieldsRegistry = new Map();
 
@@ -18,7 +18,40 @@ export const registerFields = () => {
     }
 }
 
-export const getFieldRenderer = (key) => {
+export const getFieldRenderer = (key, mode = "card") => {
+    const field = getField(key);
+    if (mode === "card") {
+        return field.renderAsCard;
+    }
+    if (mode === "desk") {
+        return field.renderAsDesk;
+    }
+    throw new Error(`Unknown render mode "${mode}"`);
+}
+
+export const registerField = (field) => {
+    if (!field.name) {
+        throw new Error("Field must have a name");
+    }
+    if (fieldsRegistry.has(field.name)) {
+        throw new Error(`Field "${field.name}" already registered`);
+    }
+    fieldsRegistry.set(field.name, field);
+}
+
+const registerBaseFields = () => {
+    registerField(checkBoxField);
+    registerField(dateField);
+    registerField(dateTimeField);
+    registerField(emailField);
+    registerField(numberField);
+    registerField(passwordField);
+    registerField(staticSelectField);
+    registerField(staticTextField);
+    registerField(textField);
+}
+
+const getField = (key) => {
 
     const result = fieldsRegistry.get(key);
     if (result) {
@@ -27,16 +60,4 @@ export const getFieldRenderer = (key) => {
     // TODO process an error:
     const err = new Error(`no field renderer for key "${key}"`);
     throw err;
-}
-
-const registerBaseFields = () => {
-    fieldsRegistry.set("base/text", textContent);
-    fieldsRegistry.set("base/password", passwordContent);
-    fieldsRegistry.set("base/date", dateContent);
-    fieldsRegistry.set("base/dateTime", dateTimeContent);
-    fieldsRegistry.set("base/staticText", staticTextContent);
-    fieldsRegistry.set("base/number", numberContent);
-    fieldsRegistry.set("base/boolean", checkBoxContent);
-    fieldsRegistry.set("base/staticList", staticSelectContent);
-    fieldsRegistry.set("base/email", emailContent);
 }

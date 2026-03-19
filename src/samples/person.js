@@ -24,7 +24,7 @@ export const personSample = {
                 fields: [
                     {
                         name: "country",
-                        type: "base/staticList",
+                        type: "base/staticSelect",
                         values: ["US", "UK", "GE", "FR", "UA", "PL"]
                     },
                     {

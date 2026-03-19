@@ -1,10 +1,14 @@
 import {setByPath} from "../main.js";
-import {elem} from "../dom.js";
+import {input} from "../dom.js";
 
-export const checkBoxContent = (ctx) => {
+export const checkBoxField = {
+    name: "base/boolean",
+    type: "leaf",
+    renderAsCard: (ctx) => {
         const onChange = (e) => {
             ctx.data = e.target.checked;
             setByPath(ctx, e.target.checked);
         };
-        return elem("input", { type: "checkbox", checked: ctx.data, onChange });
+        return input({ type: "checkbox", checked: ctx.data, onChange });
+    }
 }
