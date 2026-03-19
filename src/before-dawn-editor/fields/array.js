@@ -1,11 +1,32 @@
-import {render} from "../main.js";
-import {cardTitle, createCardId} from "./base.js";
+import {convertContextsToCards, newPath, render} from "../main.js";
 import {action, actionDanger, div, elem, span} from "../dom.js";
+import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../cards/base.js";
 
-export const renderFrameForArrayItem = (ctx, content) => div(
-    {"class": "item", "id": createCardId(ctx)},
-    [cardTitle(ctx), table(ctx, content)]
-);
+const renderAsDesk = (ctx) => {
+    const contexts = ctx.data
+        .map((data, index) => {
+            return {
+                root: ctx.root,
+                schema: ctx.schema.item,
+                name: `${index}`,
+                path: newPath(ctx),
+                data,
+                size: ctx.data.length
+            }
+        });
+    return convertContextsToCards(contexts, renderFrameForArrayItem);
+};
+
+export const arrayField = {
+    name: "base/array",
+    type: "composite",
+
+    renderAsCard: (ctx) =>
+        drillLinkContent(ctx, span({ "class": "link"}, ["[ " + ctx.data.length + " " + ARROW_DOWN + " ]"])),
+
+    renderAsDesk
+
+}
 
 export const insertItemBefore = (ctx, index) => action(
     "+",
@@ -19,7 +40,11 @@ export const insertItemAfter = (ctx, index) => action(
     () => insertNewItemAt(ctx, index + 1)
 );
 
-// ---
+export const renderFrameForArrayItem = (ctx, content) => div(
+    {"class": "item", "id": createCardId(ctx)},
+    [cardTitle(ctx), table(ctx, content)]
+);
+
 const insertNewItemAt = (ctx, pos) => insertAt(ctx, structuredClone(ctx.schema.prototype), pos);
 const copyPasteItemAt = (ctx, src, pos) => {
     const deepCopy = structuredClone(ctx.data[src]);

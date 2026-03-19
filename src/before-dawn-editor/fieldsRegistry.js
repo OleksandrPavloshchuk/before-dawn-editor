@@ -8,15 +8,11 @@ import {checkBoxField} from "./fields/checkBox.js";
 import {staticSelectField} from "./fields/staticSelect.js";
 import {emailField} from "./fields/email.js";
 import {structField} from "./fields/struct.js";
+import {arrayField} from "./fields/array.js";
 
 const fieldsRegistry = new Map();
 
 export const isComposite = (key) => {
-    // TODO create array field and remove this detour:
-    if (key === "base/array") {
-        return true;
-    }
-
     return getField(key).type === "composite";
 }
 
@@ -51,6 +47,7 @@ export const registerField = (field) => {
 
 const registerBaseFields = () => {
     registerField(structField);
+    registerField(arrayField);
     registerField(checkBoxField);
     registerField(dateField);
     registerField(dateTimeField);

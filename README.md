@@ -268,10 +268,9 @@ Property Description
 dist
 ├── before-dawn-editor
 │   ├── cards
-│   │   ├── arrayFrame.js
-│   │   ├── base.js
-│   │   └── structFrame.js
+│   │   └── base.js
 │   ├── fields
+│   │   ├── array.js
 │   │   ├── checkBox.js
 │   │   ├── date.js
 │   │   ├── dateTime.js
@@ -280,6 +279,7 @@ dist
 │   │   ├── password.js
 │   │   ├── staticSelect.js
 │   │   ├── staticText.js
+│   │   ├── struct.js
 │   │   └── text.js
 │   ├── main.css
 │   └── main.js

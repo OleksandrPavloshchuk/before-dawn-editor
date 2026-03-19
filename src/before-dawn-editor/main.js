@@ -1,7 +1,7 @@
 import {card} from "./cards/base.js";
-import {insertItemAfter, insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
 import {action, div, getRoot, span} from "./dom.js";
 import {getFieldRenderer, isComposite, registerFields} from "./fieldsRegistry.js";
+import {insertItemAfter, insertItemBefore} from "./fields/array.js";
 
 export const render = (ctx) => {
     registerFields();
@@ -23,21 +23,19 @@ export const setByPath = (ctx, value) => {
     parent[last] = value;
 };
 
-export const convertContextsToCards = (ctxs, render) => {
-    return ctxs.map((ctx, index) => {
-        if (isComposite(ctx.schema.type)) {
-            const leftCtx = findClosedLeftComplexCtx(ctxs, index);
-            if (leftCtx) {
-                ctx.left = leftCtx;
-            }
-            const rightCtx = findClosedRightComplexCtx(ctxs, index);
-            if (rightCtx) {
-                ctx.right = rightCtx;
-            }
+export const convertContextsToCards = (contexts, render) => contexts.map((ctx, index) => {
+    if (isComposite(ctx.schema.type)) {
+        const leftCtx = findClosedLeftComplexCtx(contexts, index);
+        if (leftCtx) {
+            ctx.left = leftCtx;
         }
-        return card(ctx, render);
-    });
-};
+        const rightCtx = findClosedRightComplexCtx(contexts, index);
+        if (rightCtx) {
+            ctx.right = rightCtx;
+        }
+    }
+    return card(ctx, render);
+});
 
 export const newPath = (ctx) => [...ctx.path, ctx];
 
@@ -69,17 +67,7 @@ const convertSchemaToComponent = (ctx) => {
 
 };
 
-const createCardArray = (ctx) => {
-    switch (ctx.schema.type) {
-        case "base/struct":
-            return getFieldRenderer(ctx.schema.type, "desk")(ctx);
-        case "base/array":
-            return arrayCards(ctx);
-        default:
-            // TODO
-            return ["TODO implement this"];
-    }
-}
+const createCardArray = (ctx) => getFieldRenderer(ctx.schema.type, "desk")(ctx);
 
 const createStartDiv = (ctx) => {
     switch (ctx.schema.type) {
@@ -120,7 +108,7 @@ const navigationDiv = (path) => {
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
 
-function titleWithNavigation(ctx) {
+const titleWithNavigation = (ctx) => {
     const name = span({"class": "large"}, [ctx.name]);
     const titleWithNavigation = [];
     if (ctx.left) {
@@ -152,21 +140,6 @@ const titleDiv = (ctx) => {
         children.push(showObjectAction);
     }
     return div({"class": "title vertical-gap"}, children);
-}
-
-const arrayCards = (ctx) => {
-    const ctxs = ctx.data
-        .map((data, index) => {
-            return {
-                root: ctx.root,
-                schema: ctx.schema.item,
-                name: `${index}`,
-                path: newPath(ctx),
-                data,
-                size: ctx.data.length
-            }
-        });
-    return convertContextsToCards(ctxs, renderFrameForArrayItem);
 }
 
 const findClosedLeftComplexCtx = (ctxs, index) => {

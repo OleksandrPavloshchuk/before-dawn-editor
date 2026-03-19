@@ -1,20 +1,8 @@
-import {convertContextsToCards, newPath, setByPath} from "../main.js";
-import {span} from "../dom.js";
-import {ARROW_DOWN, drillLinkContent} from "../cards/base.js";
-import {renderFrameForStructItem} from "../cards/structFrame.js";
+import {convertContextsToCards, newPath} from "../main.js";
+import {div, span} from "../dom.js";
+import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../cards/base.js";
 
-export const structField = {
-    name: "base/struct",
-    type: "composite",
-
-    renderAsCard: (ctx) =>
-        drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"])),
-
-    renderAsDesk: (ctx) => structCards(ctx)
-
-}
-
-const structCards = (ctx) => {
+const renderAsDesk = (ctx) => {
     const contexts = ctx.schema.fields
         .map((field) => {
             return {
@@ -27,3 +15,19 @@ const structCards = (ctx) => {
         });
     return convertContextsToCards(contexts, renderFrameForStructItem);
 };
+
+export const structField = {
+    name: "base/struct",
+    type: "composite",
+
+    renderAsCard: (ctx) =>
+        drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"])),
+
+    renderAsDesk
+
+}
+
+const renderFrameForStructItem = (ctx, content) => div(
+    {"class": "item", "id": createCardId(ctx)},
+    [cardTitle(ctx), div({"class": "content"}, [content])]
+);
