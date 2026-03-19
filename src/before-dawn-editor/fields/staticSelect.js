@@ -5,10 +5,7 @@ export const staticSelectField = {
     name: "base/staticSelect",
     type: "leaf",
     renderAsCard: (ctx) => {
-        const onChange = (e) => {
-            ctx.data = e.target.value;
-            setByPath(ctx, e.target.value);
-        };
+        const onChange = (e) => setByPath(ctx, e.target.value);
 
         const options = ctx.schema.values.map( (val) =>
             elem("option", {

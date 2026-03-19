@@ -5,10 +5,7 @@ export const dateField = {
     name: "base/date",
     type: "leaf",
     renderAsCard: (ctx) => {
-        const onInput = (e) => {
-            ctx.data = e.target.value;
-            setByPath(ctx, e.target.value);
-        };
+        const onInput = (e) => setByPath(ctx, e.target.value);
 
         return input( {
             name: ctx.name,

@@ -1,8 +1,7 @@
 import {card} from "./cards/base.js";
 import {insertItemAfter, insertItemBefore, renderFrameForArrayItem} from "./cards/arrayFrame.js";
-import {renderFrameForStructItem} from "./cards/structFrame.js";
 import {action, div, getRoot, span} from "./dom.js";
-import {registerFields} from "./fieldsRegistry.js";
+import {getFieldRenderer, isComposite, registerFields} from "./fieldsRegistry.js";
 
 export const render = (ctx) => {
     registerFields();
@@ -23,6 +22,24 @@ export const setByPath = (ctx, value) => {
         .reduce((acc, key) => acc?.[key], ctx.root);
     parent[last] = value;
 };
+
+export const convertContextsToCards = (ctxs, render) => {
+    return ctxs.map((ctx, index) => {
+        if (isComposite(ctx.schema.type)) {
+            const leftCtx = findClosedLeftComplexCtx(ctxs, index);
+            if (leftCtx) {
+                ctx.left = leftCtx;
+            }
+            const rightCtx = findClosedRightComplexCtx(ctxs, index);
+            if (rightCtx) {
+                ctx.right = rightCtx;
+            }
+        }
+        return card(ctx, render);
+    });
+};
+
+export const newPath = (ctx) => [...ctx.path, ctx];
 
 // private functions
 
@@ -55,7 +72,7 @@ const convertSchemaToComponent = (ctx) => {
 const createCardArray = (ctx) => {
     switch (ctx.schema.type) {
         case "base/struct":
-            return structCards(ctx);
+            return getFieldRenderer(ctx.schema.type, "desk")(ctx);
         case "base/array":
             return arrayCards(ctx);
         default:
@@ -137,22 +154,6 @@ const titleDiv = (ctx) => {
     return div({"class": "title vertical-gap"}, children);
 }
 
-const newPath = (ctx) => [...ctx.path, ctx];
-
-const structCards = (ctx) => {
-    const ctxs = ctx.schema.fields
-        .map((field) => {
-            return {
-                root: ctx.root,
-                schema: field,
-                name: field.name,
-                path: newPath(ctx),
-                data: ctx.data[field.name]
-            }
-        });
-    return convertCtxsToCard(ctxs, renderFrameForStructItem);
-};
-
 const arrayCards = (ctx) => {
     const ctxs = ctx.data
         .map((data, index) => {
@@ -165,29 +166,13 @@ const arrayCards = (ctx) => {
                 size: ctx.data.length
             }
         });
-    return convertCtxsToCard(ctxs, renderFrameForArrayItem);
+    return convertContextsToCards(ctxs, renderFrameForArrayItem);
 }
-
-const convertCtxsToCard = (ctxs, render) => {
-    return ctxs.map((ctx, index) => {
-        if (isComplex(ctx)) {
-            const leftCtx = findClosedLeftComplexCtx(ctxs, index);
-            if (leftCtx) {
-                ctx.left = leftCtx;
-            }
-            const rightCtx = findClosedRightComplexCtx(ctxs, index);
-            if (rightCtx) {
-                ctx.right = rightCtx;
-            }
-        }
-        return card(ctx, render);
-    });
-};
 
 const findClosedLeftComplexCtx = (ctxs, index) => {
     for (let i = index - 1; i >= 0; i--) {
         const ctx = ctxs[i];
-        if (isComplex(ctx)) {
+        if (isComposite(ctx.schema.type)) {
             return ctx;
         }
     }
@@ -197,11 +182,9 @@ const findClosedLeftComplexCtx = (ctxs, index) => {
 const findClosedRightComplexCtx = (ctxs, index) => {
     for (let i = index + 1; i < ctxs.length; i++) {
         const ctx = ctxs[i];
-        if (isComplex(ctx)) {
+        if (isComposite(ctx.schema.type)) {
             return ctx;
         }
     }
     return undefined;
 };
-
-const isComplex = (ctx) => ctx.schema.type === "base/struct" || ctx.schema.type === "base/array";

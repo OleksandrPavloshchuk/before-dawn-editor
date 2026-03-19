@@ -10,14 +10,15 @@ export const cardTitle = (ctx) => div({"class": "title"}, [
 
 export const createCardId = (ctx) => `cardField_${ctx.name}`;
 
+export const ARROW_DOWN = '\u25BE';
+
+export const drillLinkContent = (ctx, link) => div({onClick: () => render(ctx)}, [link]);
+
 //---
 
 const createContent = (ctx) =>  {
     let renderer;
     switch (ctx.schema.type) {
-        case "base/struct":
-            renderer = structContent;
-            break;
         case "base/array":
             renderer = arrayContent;
             break;
@@ -27,15 +28,8 @@ const createContent = (ctx) =>  {
     return renderer(ctx);
 };
 
-const ARROW_DOWN = '\u25BE';
-
-const structContent = (ctx) =>
-    drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"]));
-
 const arrayContent = (ctx) =>
     drillLinkContent(ctx, span({ "class": "link"}, ["[ " + ctx.data.length + " " + ARROW_DOWN + " ]"]));
-
-const drillLinkContent = (ctx, link) => div({onClick: () => render(ctx)}, [link]);
 
 const EXPAND_ONE = '\u2922';
 const expandOneFieldAction = (ctx) => actionWithId(expandOneActionId(ctx), EXPAND_ONE, "Expand this field",
