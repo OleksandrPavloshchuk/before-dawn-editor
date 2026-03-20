@@ -22,29 +22,38 @@ export const arrayField = {
     type: "composite",
 
     renderAsCard: (ctx) =>
-        drillLinkContent(ctx, span({ "class": "link"}, ["[ " + ctx.data.length + " " + ARROW_DOWN + " ]"])),
+        drillLinkContent(ctx, span({"class": "link"}, ["[ " + ctx.data.length + " " + ARROW_DOWN + " ]"])),
 
-    renderAsDesk
+    renderAsDesk,
+
+    chainBegin: (ctx) => div({"class": "aside right"}, [
+        span({"class": "big"}, ["["]),
+        insertItemBefore(ctx, 0)
+    ]),
+
+    chainEnd: (ctx) => div({"class": "aside left"}, [
+        insertItemAfter(ctx, ctx.data.length - 1),
+        span({"class": "big"}, ["]"])]
+    )
 
 }
 
-export const insertItemBefore = (ctx, index) => action(
+const renderFrameForArrayItem = (ctx, content) => div(
+    {"class": "item", "id": createCardId(ctx)},
+    [cardTitle(ctx), table(ctx, content)]
+);
+
+const insertItemBefore = (ctx, index) => action(
     "+",
     `Add new item before ${index}`,
     () => insertNewItemAt(ctx, index)
 );
 
-export const insertItemAfter = (ctx, index) => action(
+const insertItemAfter = (ctx, index) => action(
     "+",
     `Add new item after ${index}`,
     () => insertNewItemAt(ctx, index + 1)
 );
-
-export const renderFrameForArrayItem = (ctx, content) => div(
-    {"class": "item", "id": createCardId(ctx)},
-    [cardTitle(ctx), table(ctx, content)]
-);
-
 const insertNewItemAt = (ctx, pos) => insertAt(ctx, structuredClone(ctx.schema.prototype), pos);
 const copyPasteItemAt = (ctx, src, pos) => {
     const deepCopy = structuredClone(ctx.data[src]);
@@ -98,7 +107,7 @@ const tr = (cells) => elem("tr", {},
                 cls = {"class": "right"};
                 break;
         }
-        return c.tagName.toLowerCase()==="td" ? c : elem("td", cls, [c]);
+        return c.tagName.toLowerCase() === "td" ? c : elem("td", cls, [c]);
     })
 );
 
@@ -132,7 +141,7 @@ const swapItems = (ctx, text, index1, index2, size) => {
         });
 }
 
-const COPY = '\u29C9'+'+'; /* copy: U+29C9 */
+const COPY = '\u29C9' + '+'; /* copy: U+29C9 */
 
 const copyPasteItemBefore = (ctx, index) => action(
     COPY,

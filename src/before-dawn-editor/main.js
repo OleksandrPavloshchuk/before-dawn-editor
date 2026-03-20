@@ -1,7 +1,7 @@
 import {card} from "./cards/base.js";
-import {action, div, getRoot, span} from "./dom.js";
-import {getFieldRenderer, isComposite, registerFields} from "./fieldsRegistry.js";
-import {insertItemAfter, insertItemBefore} from "./fields/array.js";
+import {div, getRoot, span} from "./dom.js";
+import {getField, getFieldRenderer, isComposite, registerFields} from "./fieldsRegistry.js";
+import {titleDiv} from "./title.js";
 
 export const render = (ctx) => {
     registerFields();
@@ -53,53 +53,28 @@ const convertSchemaToComponent = (ctx) => {
         return;
     }
 
-    const middleDiv = div({"class": "chain"}, createCardArray(ctx));
-    // TODO generate the unique ID
-    const areaDiv = div({"class": "area vertical-gap", "id": "control-area"}, [
-        createStartDiv(ctx), middleDiv, createEndDiv(ctx)
-    ]);
+    const deskChildren = [];
+    const field = getField(ctx.schema.type);
+
+    if (field.chainBegin) {
+        deskChildren.push(field.chainBegin(ctx));
+    }
+    deskChildren.push(div({"class": "chain"}, createCardArray(ctx)));
+    if (field.chainEnd) {
+        deskChildren.push(field.chainEnd(ctx));
+    }
+
+    const deskDiv = div({"class": "desk vertical-gap", "id": "control-desk"}, [deskChildren]);
 
     return div({"class": "bde-component"}, [
         navigationDiv(ctx.path),
         titleDiv(ctx),
-        areaDiv
+        deskDiv
     ]);
 
 };
 
 const createCardArray = (ctx) => getFieldRenderer(ctx.schema.type, "desk")(ctx);
-
-const createStartDiv = (ctx) => {
-    switch (ctx.schema.type) {
-        case "base/struct":
-            return div({"class": "aside right"}, [
-                span({"class": "big"}, ["{"])
-            ]);
-        case "base/array":
-            return div({"class": "aside right"}, [
-                span({"class": "big"}, ["["]),
-                insertItemBefore(ctx, 0)
-            ]);
-        default:
-            return div({}, []);
-    }
-}
-
-const createEndDiv = (ctx) => {
-    switch (ctx.schema.type) {
-        case "base/struct":
-            return div({"class": "aside left"}, [
-                span({"class": "big"}, ["}"])
-            ]);
-        case "base/array":
-            return div({"class": "aside left"}, [
-                insertItemAfter(ctx, ctx.data.length - 1),
-                span({"class": "big"}, ["]"])
-            ]);
-        default:
-            return div({}, []);
-    }
-}
 
 const navigationDiv = (path) => {
     const toSpan = (ctx) =>
@@ -108,43 +83,10 @@ const navigationDiv = (path) => {
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
 
-const titleWithNavigation = (ctx) => {
-    const name = span({"class": "large"}, [ctx.name]);
-    const titleWithNavigation = [];
-    if (ctx.left) {
-        const leftAction = action(
-            ctx.left.name,
-            "",
-            () => render(ctx.left));
-        titleWithNavigation.push(leftAction);
-    }
-    titleWithNavigation.push(name);
-    if (ctx.right) {
-        const rightAction = action(
-            ctx.right.name,
-            "",
-            () => render(ctx.right));
-        titleWithNavigation.push(rightAction);
-    }
-    return titleWithNavigation;
-}
 
-const titleDiv = (ctx) => {
-    const children = [];
-    children.push(div({}, [titleWithNavigation(ctx)]));
-    if (ctx.onUpdate) {
-        const showObjectAction = action(
-            "Show object on console",
-            "",
-            () => ctx.onUpdate(ctx.root));
-        children.push(showObjectAction);
-    }
-    return div({"class": "title vertical-gap"}, children);
-}
-
-const findClosedLeftComplexCtx = (ctxs, index) => {
+const findClosedLeftComplexCtx = (contexts, index) => {
     for (let i = index - 1; i >= 0; i--) {
-        const ctx = ctxs[i];
+        const ctx = contexts[i];
         if (isComposite(ctx.schema.type)) {
             return ctx;
         }
@@ -152,12 +94,13 @@ const findClosedLeftComplexCtx = (ctxs, index) => {
     return undefined;
 };
 
-const findClosedRightComplexCtx = (ctxs, index) => {
-    for (let i = index + 1; i < ctxs.length; i++) {
-        const ctx = ctxs[i];
+const findClosedRightComplexCtx = (contexts, index) => {
+    for (let i = index + 1; i < contexts.length; i++) {
+        const ctx = contexts[i];
         if (isComposite(ctx.schema.type)) {
             return ctx;
         }
     }
     return undefined;
 };
+

@@ -23,7 +23,10 @@ export const structField = {
     renderAsCard: (ctx) =>
         drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"])),
 
-    renderAsDesk
+    renderAsDesk,
+
+    chainBegin: () => div({"class": "aside left"}, [span({"class": "big"}, ["{"])]),
+    chainEnd: () => div({"class": "aside left"}, [span({"class": "big"}, ["}"])])
 
 }
 

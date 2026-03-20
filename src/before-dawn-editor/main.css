@@ -18,13 +18,13 @@ body {
 }
 
 .link:hover {
-    color: #66CCFF;
-    border: 1px solid #66CCFF;
+    color: #00CCFF;
+    border: 1px solid #00CCFF;
 }
 
 .link.action-danger:hover {
-    color: #ff3370;
-    border: 1px solid #ff3370;
+    color: #FF6633;
+    border: 1px solid #FF6633;
 }
 
 .vertical-gap {
@@ -77,33 +77,33 @@ body {
 }
 
 /* Area */
-.bde-component > .area {
+.bde-component > .desk {
     background-color: whitesmoke;
     display: grid;
     grid-template-columns: 30px 1fr 30px;
 }
 
 /* Area aside */
-.bde-component > .area > .aside {
+.bde-component > .desk > .aside {
     display: flex;
     align-items: center;
 }
 
-.bde-component > .area > .aside.left {
+.bde-component > .desk > .aside.left {
     justify-content: flex-start;
 }
 
-.bde-component > .area > .aside.right {
+.bde-component > .desk > .aside.right {
     justify-content: flex-end;
 }
 
-.bde-component > .area > .aside > .big {
+.bde-component > .desk > .aside > .big {
     font-weight: bold;
     font-size: x-large;
 }
 
 /* Chain */
-.bde-component > .area > .chain {
+.bde-component > .desk > .chain {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
     gap: 8px;
@@ -111,7 +111,7 @@ body {
 }
 
 /* Chain item */
-.bde-component > .area > .chain > .item {
+.bde-component > .desk > .chain > .item {
     background-color: white;
     border-radius: 3px;
     padding: 6px;
@@ -121,14 +121,14 @@ body {
 }
 
 /* Chain item title */
-.bde-component > .area > .chain > .item > .title {
+.bde-component > .desk > .chain > .item > .title {
     font-weight: bold;
     text-align: center;
     padding-bottom: 0.5em;
 }
 
 /* Chain item table for array */
-.bde-component > .area > .chain > .item > table {
+.bde-component > .desk > .chain > .item > table {
     width: 100%;
 }
 

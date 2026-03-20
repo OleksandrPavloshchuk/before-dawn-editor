@@ -45,6 +45,17 @@ export const registerField = (field) => {
     fieldsRegistry.set(field.name, field);
 }
 
+export const getField = (key) => {
+
+    const result = fieldsRegistry.get(key);
+    if (result) {
+        return result;
+    }
+    // TODO process an error:
+    const err = new Error(`no field renderer for key "${key}"`);
+    throw err;
+}
+
 const registerBaseFields = () => {
     registerField(structField);
     registerField(arrayField);
@@ -57,15 +68,4 @@ const registerBaseFields = () => {
     registerField(staticSelectField);
     registerField(staticTextField);
     registerField(textField);
-}
-
-const getField = (key) => {
-
-    const result = fieldsRegistry.get(key);
-    if (result) {
-        return result;
-    }
-    // TODO process an error:
-    const err = new Error(`no field renderer for key "${key}"`);
-    throw err;
 }

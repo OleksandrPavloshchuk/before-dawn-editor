@@ -31,20 +31,14 @@ const expandAllFieldsAction = (ctx) => {
 };
 
 const expandOneField = (ctx) => {
-    const expandAllActionElem = document.getElementById(expandAllActionId(ctx));
-    const expandOneActionElem = document.getElementById(expandOneActionId(ctx));
-    expandAllActionElem.style.display = 'block';
-    expandOneActionElem.style.display = 'none';
-
+    getExtractAllAction(ctx).style.display = 'block';
+    getExtractOneAction(ctx).style.display = 'none';
     expandOne(ctx);
 };
 
 const expandAllFields = (ctx) => {
-    const expandAllActionElem = document.getElementById(expandAllActionId(ctx));
-    const expandOneActionElem = document.getElementById(expandOneActionId(ctx));
-    expandAllActionElem.style.display = 'none';
-    expandOneActionElem.style.display = 'block';
-
+    getExtractAllAction(ctx).style.display = 'none';
+    getExtractOneAction(ctx).style.display = 'block';
     expandAll();
 };
 
@@ -68,4 +62,8 @@ const expandAll = () => {
     });
 };
 
-const getControlAreaElem = () => document.getElementById("control-area");
+const getControlAreaElem = () => document.getElementById("control-desk");
+
+const getAction = (ctx, extractId) => document.getElementById(extractId(ctx));
+const getExtractOneAction = (ctx) => getAction(ctx, expandOneActionId);
+const getExtractAllAction = (ctx) => getAction(ctx, expandAllActionId);
