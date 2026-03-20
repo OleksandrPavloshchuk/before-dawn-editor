@@ -1,6 +1,6 @@
-import {render} from "../main.js";
-import {actionWithId, div} from "../dom.js";
-import {getFieldRenderer} from "../fieldsRegistry.js";
+import {render} from "./main.js";
+import {actionWithId, div} from "./dom.js";
+import {getFieldRenderer} from "./fieldsRegistry.js";
 
 export const card = (ctx, renderFrame) => renderFrame(ctx, getFieldRenderer(ctx.schema.type)(ctx));
 

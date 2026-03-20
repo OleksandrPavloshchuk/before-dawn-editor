@@ -1,6 +1,6 @@
 import {convertContextsToCards, newPath, render} from "../main.js";
 import {action, actionDanger, div, elem, span} from "../dom.js";
-import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../cards/base.js";
+import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
 
 const renderAsDesk = (ctx) => {
     const contexts = ctx.data

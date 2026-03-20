@@ -1,4 +1,4 @@
-import {card} from "./cards/base.js";
+import {card} from "./card.js";
 import {div, getRoot, span} from "./dom.js";
 import {getField, getFieldRenderer, isComposite, registerFields} from "./fieldsRegistry.js";
 import {titleDiv} from "./title.js";

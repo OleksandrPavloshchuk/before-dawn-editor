@@ -267,8 +267,8 @@ Property Description
 ```
 dist
 ├── before-dawn-editor
-│   ├── cards
-│   │   └── base.js
+│   ├── card.js
+│   ├── dom.js
 │   ├── fields
 │   │   ├── array.js
 │   │   ├── checkBox.js
@@ -281,8 +281,10 @@ dist
 │   │   ├── staticText.js
 │   │   ├── struct.js
 │   │   └── text.js
+│   ├── fieldsRegistry.js
 │   ├── main.css
-│   └── main.js
+│   ├── main.js
+│   └── title.js
 ├── index.html
 ├── samples
 │   ├── array.js
@@ -304,6 +306,7 @@ Implemented:
 
 Planned features:
 
+* Buttons for search by path, export and import nodes
 * Export of serialized JSON
 * Basic validation:
     - required fields
