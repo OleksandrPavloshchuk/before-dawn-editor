@@ -3,19 +3,24 @@ import {action, actionDanger, div, elem, span} from "../dom.js";
 import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
 
 const renderAsDesk = (ctx) => {
-    const contexts = ctx.data
-        .map((data, index) => {
-            return {
-                parent: ctx,
-                schema: ctx.schema.item,
-                name: `${index}`,
-                path: newPath(ctx),
-                data,
-                size: ctx.data.length
-            }
-        });
+    const contexts = ctx.data.map((_, index) => createChildCtxByIndex(ctx, index));
     return convertContextsToCards(contexts, renderFrameForArrayItem);
 };
+
+const createChildCtxByIndex = (ctx, index) => {
+    const data = ctx.data[index];
+    return {
+        onChangePath: ctx.onChangePath,
+        parent: ctx,
+        schema: ctx.schema.item,
+        name: `${index}`,
+        path: newPath(ctx),
+        data,
+        size: ctx.data.length
+    };
+}
+
+const createChildCtxByName = (ctx, name) => createChildCtxByIndex(ctx, Number.parseInt(name));
 
 export const arrayField = {
     name: "base/array",
@@ -34,7 +39,10 @@ export const arrayField = {
     chainEnd: (ctx) => div({"class": "aside left"}, [
         insertItemAfter(ctx, ctx.data.length - 1),
         span({"class": "big"}, ["]"])]
-    )
+    ),
+
+    createChildCtxByIndex,
+    createChildCtxByName
 
 }
 

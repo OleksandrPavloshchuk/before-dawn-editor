@@ -7,6 +7,13 @@ export const render = (ctx) => {
     registerFields();
     getRoot().replaceChildren();
     getRoot().appendChild(convertSchemaToComponent(ctx));
+
+    ctx.onChangePath(getPath(ctx));
+
+    ctx.goToPath = (pathStr) => {
+        const arr = pathStr.split("/").map(s => s.trim()).filter(Boolean);
+        alert(`TODO go to path ${arr}`);
+    }
 }
 
 export const getByPath = (obj, path) =>
@@ -49,6 +56,18 @@ export const getRootCtx = (ctx, visited = new Set()) => {
 }
 
 // private functions
+
+const getPath = (ctx) => {
+    const path = [];
+    let current = ctx;
+
+    while (current) {
+        path.unshift(current.name);
+        current = current.parent;
+    }
+
+    return path;
+}
 
 const raiseError = (error) => {
     // TODO show error

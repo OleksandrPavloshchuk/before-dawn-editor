@@ -2,17 +2,25 @@ import {convertContextsToCards, newPath} from "../main.js";
 import {div, span} from "../dom.js";
 import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
 
+const createChildCtxByIndex = (ctx, index) => {
+    const field = ctx.schema.fields[index];
+    return {
+        onChangePath: ctx.onChangePath,
+        parent: ctx,
+        schema: field,
+        name: field.name,
+        path: newPath(ctx),
+        data: ctx.data[field.name]
+    };
+}
+
+const createChildCtxByName = (ctx, name) => {
+    const index = ctx.schema.fields.findIndex( (item) => item.name === name);
+    return (index >= 0) ? createChildCtxByIndex(ctx, index) : undefined;
+}
+
 const renderAsDesk = (ctx) => {
-    const contexts = ctx.schema.fields
-        .map((field) => {
-            return {
-                parent: ctx,
-                schema: field,
-                name: field.name,
-                path: newPath(ctx),
-                data: ctx.data[field.name]
-            }
-        });
+    const contexts = ctx.schema.fields.map((_, index) => createChildCtxByIndex(ctx, index));
     return convertContextsToCards(contexts, renderFrameForStructItem);
 };
 
@@ -26,8 +34,10 @@ export const structField = {
     renderAsDesk,
 
     chainBegin: () => div({"class": "aside left"}, [span({"class": "big"}, ["{"])]),
-    chainEnd: () => div({"class": "aside right"}, [span({"class": "big"}, ["}"])])
+    chainEnd: () => div({"class": "aside right"}, [span({"class": "big"}, ["}"])]),
 
+    createChildCtxByIndex,
+    createChildCtxByName
 }
 
 const renderFrameForStructItem = (ctx, content) => div(

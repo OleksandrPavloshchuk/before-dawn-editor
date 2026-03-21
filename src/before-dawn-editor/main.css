@@ -1,9 +1,11 @@
 body {
     font-family: "Roboto Thin", sans-serif;
     font-size: 12pt;
+    background-color: honeydew;
 }
 
 .bde-component {
+    background-color: white;
     padding: 1em;
 }
 
@@ -100,6 +102,10 @@ body {
 .bde-component > .desk > .aside > .big {
     font-weight: bold;
     font-size: x-large;
+}
+
+.big {
+    padding: 5px;
 }
 
 /* Chain */
