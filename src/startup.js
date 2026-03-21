@@ -8,8 +8,7 @@ const toContext = (sample) => {
     return {
         name: sample.schema.name,
         schema: sample.schema,
-        data: sample.data,
-        root: sample.data
+        data: sample.data
     }
 }
 

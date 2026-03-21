@@ -1,6 +1,6 @@
 import {card} from "./card.js";
 import {div, getRoot, span} from "./dom.js";
-import {getField, getFieldRenderer, isComposite, registerFields} from "./fieldsRegistry.js";
+import {getField, getFieldRenderer, isDrillable, registerFields} from "./fieldsRegistry.js";
 import {titleDiv} from "./title.js";
 
 export const render = (ctx) => {
@@ -17,14 +17,15 @@ export const setByPath = (ctx, value) => {
         .slice(1)
         .map((c) => c.name).concat(ctx.name);
     const last = path[path.length - 1];
+    const rootCtx = getRootCtx(ctx);
     const parent = path
         .slice(0, -1)
-        .reduce((acc, key) => acc?.[key], ctx.root);
+        .reduce((acc, key) => acc?.[key], rootCtx.data);
     parent[last] = value;
 };
 
 export const convertContextsToCards = (contexts, render) => contexts.map((ctx, index) => {
-    if (isComposite(ctx.schema.type)) {
+    if (isDrillable(ctx.schema.type)) {
         const leftCtx = findClosedLeftComplexCtx(contexts, index);
         if (leftCtx) {
             ctx.left = leftCtx;
@@ -38,6 +39,14 @@ export const convertContextsToCards = (contexts, render) => contexts.map((ctx, i
 });
 
 export const newPath = (ctx) => [...ctx.path, ctx];
+
+export const getRootCtx = (ctx, visited = new Set()) => {
+    if (visited.has(ctx)) {
+        throw new Error("Cyclic context detected");
+    }
+    visited.add(ctx);
+    return (!ctx.parent) ? ctx : getRootCtx(ctx.parent, visited);
+}
 
 // private functions
 
@@ -87,7 +96,7 @@ const navigationDiv = (path) => {
 const findClosedLeftComplexCtx = (contexts, index) => {
     for (let i = index - 1; i >= 0; i--) {
         const ctx = contexts[i];
-        if (isComposite(ctx.schema.type)) {
+        if (isDrillable(ctx.schema.type)) {
             return ctx;
         }
     }
@@ -97,7 +106,7 @@ const findClosedLeftComplexCtx = (contexts, index) => {
 const findClosedRightComplexCtx = (contexts, index) => {
     for (let i = index + 1; i < contexts.length; i++) {
         const ctx = contexts[i];
-        if (isComposite(ctx.schema.type)) {
+        if (isDrillable(ctx.schema.type)) {
             return ctx;
         }
     }

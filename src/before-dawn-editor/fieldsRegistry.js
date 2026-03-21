@@ -12,8 +12,8 @@ import {arrayField} from "./fields/array.js";
 
 const fieldsRegistry = new Map();
 
-export const isComposite = (key) => {
-    return getField(key).type === "composite";
+export const isDrillable = (key) => {
+    return getField(key).type === "drillable";
 }
 
 // TODO set the list of fields to register:

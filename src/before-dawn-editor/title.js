@@ -1,5 +1,5 @@
 import {action, div, span} from "./dom.js";
-import {render} from "./main.js";
+import {getRootCtx, render} from "./main.js";
 
 export const titleDiv = (ctx) => {
     const children = [];
@@ -8,7 +8,7 @@ export const titleDiv = (ctx) => {
         const showObjectAction = action(
             "Show object on console",
             "",
-            () => ctx.onUpdate(ctx.root));
+            () => ctx.onUpdate(getRootCtx(ctx).data));
         children.push(showObjectAction);
     }
     return div({"class": "title vertical-gap"}, children);

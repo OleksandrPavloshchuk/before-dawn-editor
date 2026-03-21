@@ -6,7 +6,7 @@ const renderAsDesk = (ctx) => {
     const contexts = ctx.schema.fields
         .map((field) => {
             return {
-                root: ctx.root,
+                parent: ctx,
                 schema: field,
                 name: field.name,
                 path: newPath(ctx),
@@ -18,7 +18,7 @@ const renderAsDesk = (ctx) => {
 
 export const structField = {
     name: "base/struct",
-    type: "composite",
+    type: "drillable",
 
     renderAsCard: (ctx) =>
         drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"])),
@@ -26,7 +26,7 @@ export const structField = {
     renderAsDesk,
 
     chainBegin: () => div({"class": "aside left"}, [span({"class": "big"}, ["{"])]),
-    chainEnd: () => div({"class": "aside left"}, [span({"class": "big"}, ["}"])])
+    chainEnd: () => div({"class": "aside right"}, [span({"class": "big"}, ["}"])])
 
 }
 

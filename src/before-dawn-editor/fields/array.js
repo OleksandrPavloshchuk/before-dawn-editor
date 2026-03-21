@@ -6,7 +6,7 @@ const renderAsDesk = (ctx) => {
     const contexts = ctx.data
         .map((data, index) => {
             return {
-                root: ctx.root,
+                parent: ctx,
                 schema: ctx.schema.item,
                 name: `${index}`,
                 path: newPath(ctx),
@@ -19,7 +19,7 @@ const renderAsDesk = (ctx) => {
 
 export const arrayField = {
     name: "base/array",
-    type: "composite",
+    type: "drillable",
 
     renderAsCard: (ctx) =>
         drillLinkContent(ctx, span({"class": "link"}, ["[ " + ctx.data.length + " " + ARROW_DOWN + " ]"])),
