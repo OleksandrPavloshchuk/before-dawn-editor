@@ -41,11 +41,11 @@ const renderSample = (index) => {
     const ctx = contexts[index];
     if (ctx) {
         ctx.path = [];
-        ctx.onUpdate = (obj) => {
-            console.log("onUpdate", obj);
-            console.log("serialized", JSON.stringify(obj));
+        ctx.publishData = (obj) => {
+            console.log("publishData", obj);
+            console.log("publishData", "serialized", JSON.stringify(obj));
         };
-        ctx.onChangePath = (path) => {
+        ctx.onContextChange = (path) => {
             const editor = document.getElementById("temp-search-path");
             if (editor) {
                 const val = path.reduce( (acc, item) => acc + " / " + item, "");

@@ -4,11 +4,11 @@ import {getRootCtx, render} from "./main.js";
 export const titleDiv = (ctx) => {
     const children = [];
     children.push(div({}, [titleWithNavigation(ctx)]));
-    if (ctx.onUpdate) {
+    if (ctx.publishData) {
         const showObjectAction = action(
-            "Show object on console",
+            "Publish Data",
             "",
-            () => ctx.onUpdate(getRootCtx(ctx).data));
+            () => ctx.publishData(getRootCtx(ctx).data));
         children.push(showObjectAction);
     }
     return div({"class": "title vertical-gap"}, children);

@@ -8,7 +8,7 @@ export const render = (ctx) => {
     getRoot().replaceChildren();
     getRoot().appendChild(convertSchemaToComponent(ctx));
 
-    ctx.onChangePath(getPath(ctx));
+    ctx.onContextChange(getPath(ctx));
 
     ctx.goToPath = (pathStr) => {
         const arr = pathStr.split("/").map(s => s.trim()).filter(Boolean);

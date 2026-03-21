@@ -10,7 +10,7 @@ const renderAsDesk = (ctx) => {
 const createChildCtxByIndex = (ctx, index) => {
     const data = ctx.data[index];
     return {
-        onChangePath: ctx.onChangePath,
+        onContextChange: ctx.onContextChange,
         parent: ctx,
         schema: ctx.schema.item,
         name: `${index}`,

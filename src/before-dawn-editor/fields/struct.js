@@ -5,7 +5,7 @@ import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js"
 const createChildCtxByIndex = (ctx, index) => {
     const field = ctx.schema.fields[index];
     return {
-        onChangePath: ctx.onChangePath,
+        onContextChange: ctx.onContextChange,
         parent: ctx,
         schema: field,
         name: field.name,
@@ -16,7 +16,10 @@ const createChildCtxByIndex = (ctx, index) => {
 
 const createChildCtxByName = (ctx, name) => {
     const index = ctx.schema.fields.findIndex( (item) => item.name === name);
-    return (index >= 0) ? createChildCtxByIndex(ctx, index) : undefined;
+    if (index < 0) {
+        throw new Error(`No field ${name}`);
+    }
+    return createChildCtxByIndex(ctx, index);
 }
 
 const renderAsDesk = (ctx) => {
