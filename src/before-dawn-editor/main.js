@@ -10,14 +10,8 @@ export const render = (ctx) => {
 
     ctx.onContextChange(getPath(ctx));
 
-    ctx.goToPath = (pathStr) => {
-        const arr = pathStr.split("/").map(s => s.trim()).filter(Boolean);
-        alert(`TODO go to path ${arr}`);
-    }
+    ctx.goToPath = (pathStr) => goTo(ctx, pathStr);
 }
-
-export const getByPath = (obj, path) =>
-    path.reduce((acc, key) => acc?.[key], obj);
 
 export const setByPath = (ctx, value) => {
     const path = ctx.path
@@ -58,6 +52,27 @@ export const getRootCtx = (ctx, visited = new Set()) => {
 }
 
 // private functions
+
+const goTo = (ctx, pathStr) => {
+    const arr = pathStr.split("/").map(s => s.trim()).filter(Boolean);
+    let tempCtx;
+    for (let i = 0; i < arr.length; i++) {
+        if (i === 0) {
+            tempCtx = getRootCtx(ctx);
+        } else {
+            const field = getField(tempCtx.schema.type);
+            tempCtx = field.createChildCtxByName(tempCtx, arr[i]);
+            if (!tempCtx) {
+                break;
+            }
+        }
+    }
+    if (tempCtx) {
+        render(tempCtx);
+    } else {
+        throw new Error("No nontext");
+    }
+}
 
 const getPath = (ctx) => {
     const path = [];
