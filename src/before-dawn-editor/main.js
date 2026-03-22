@@ -1,6 +1,6 @@
 import {card} from "./card.js";
 import {div, getRoot, span} from "./dom.js";
-import {getField, getFieldRenderer, isDrillable, registerFields} from "./fieldsRegistry.js";
+import {getField, getFieldRenderer, registerFields} from "./fieldsRegistry.js";
 import {titleDiv} from "./title.js";
 
 export const render = (ctx) => {
@@ -54,23 +54,31 @@ export const getRootCtx = (ctx, visited = new Set()) => {
 // private functions
 
 const goTo = (ctx, pathStr) => {
-    const arr = pathStr.split("/").map(s => s.trim()).filter(Boolean);
-    let tempCtx;
-    for (let i = 0; i < arr.length; i++) {
-        if (i === 0) {
-            tempCtx = getRootCtx(ctx);
-        } else {
-            const field = getField(tempCtx.schema.type);
-            tempCtx = field.createChildCtxByName(tempCtx, arr[i]);
-            if (!tempCtx) {
-                break;
+    try {
+        const arr = pathStr.split("/").map(s => s.trim()).filter(Boolean);
+        let tempCtx;
+        for (let i = 0; i < arr.length; i++) {
+            if (i === 0) {
+                tempCtx = getRootCtx(ctx);
+            } else {
+                const field = getField(tempCtx.schema.type);
+                if (!field) {
+                    tempCtx = undefined;
+                    break;
+                }
+                tempCtx = field.createChildCtxByName(tempCtx, arr[i]);
+                if (!tempCtx) {
+                    break;
+                }
             }
         }
-    }
-    if (tempCtx) {
-        render(tempCtx);
-    } else {
-        throw new Error("No nontext");
+        if (tempCtx) {
+            render(tempCtx);
+        } else {
+            throw new Error("No nontext");
+        }
+    } catch (e) {
+        raiseError(e);
     }
 }
 
@@ -87,9 +95,11 @@ const getPath = (ctx) => {
 }
 
 const raiseError = (error) => {
-    // TODO show error
-    alert(error);
     console.log("ERROR", error);
+    // TODO use another approach ... maybe
+    const elemError = div({"class":"error"}, [error.toString()]);
+    getRoot().replaceChildren();
+    getRoot().appendChild(elemError);
 }
 
 const convertSchemaToComponent = (ctx) => {
@@ -119,7 +129,13 @@ const convertSchemaToComponent = (ctx) => {
 
 };
 
-const createCardArray = (ctx) => getFieldRenderer(ctx.schema.type, "desk")(ctx);
+const createCardArray = (ctx) => {
+    const renderer = getFieldRenderer(ctx.schema.type, "desk");
+    if (renderer) {
+        return renderer(ctx);
+    }
+    throw new Error(`No card array renderer for "${ctx.schema.type}"`)
+}
 
 const navigationDiv = (path) => {
     const toSpan = (ctx) =>
@@ -128,6 +144,7 @@ const navigationDiv = (path) => {
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
 
+/*
 
 const findClosedLeftComplexCtx = (contexts, index) => {
     for (let i = index - 1; i >= 0; i--) {
@@ -149,3 +166,4 @@ const findClosedRightComplexCtx = (contexts, index) => {
     return undefined;
 };
 
+*/

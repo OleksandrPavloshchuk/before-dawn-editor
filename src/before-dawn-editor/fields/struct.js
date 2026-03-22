@@ -17,7 +17,7 @@ const createChildCtxByIndex = (ctx, index) => {
 const createChildCtxByName = (ctx, name) => {
     const index = ctx.schema.fields.findIndex( (item) => item.name === name);
     if (index < 0) {
-        throw new Error(`No field ${name}`);
+        throw new Error("Object does not exist.");
     }
     return createChildCtxByIndex(ctx, index);
 }

@@ -42,6 +42,11 @@ body {
     text-align: right;
 }
 
+/* Error */
+.error {
+    color: #CC3300;
+}
+
 /* Title */
 .bde-component > .title {
     padding-top: 0.3em;

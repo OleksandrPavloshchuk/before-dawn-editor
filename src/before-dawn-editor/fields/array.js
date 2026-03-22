@@ -3,6 +3,9 @@ import {action, actionDanger, div, elem, span} from "../dom.js";
 import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
 
 const renderAsDesk = (ctx) => {
+    if (!ctx || !ctx.data) {
+        throw new Error("Object does not exist.");
+    }
     const contexts = ctx.data.map((_, index) => createChildCtxByIndex(ctx, index));
     return convertContextsToCards(contexts, renderFrameForArrayItem);
 };

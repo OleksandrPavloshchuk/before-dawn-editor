@@ -74,7 +74,7 @@ document.addEventListener('DOMContentLoaded', () => render({
     schema: schema,
     data: data,
     root: data,
-    onUpdate: (obj) => {
+    publishData: (obj) => {
         console.log("Updated object:", obj);
     }
 }));
@@ -117,8 +117,11 @@ document.addEventListener('DOMContentLoaded', () => render({
     schema: schema,
     data: data,
     root: data,
-    onUpdate: (obj) => {
+    publishData: (obj) => {
         console.log("onUpdate", obj);
+    },
+    onContextChange: (fieldChain) => {
+        console.log("onContextChange", fieldChain);
     }
 }));
 ```
@@ -143,16 +146,21 @@ Field Description
   ---------------------- ------------------------------------------------
 **name**               Name of the structure field or array index
 
-**root**               The root data object
+**parent**               The root data object
 
 **data**               Data of the current node
 
 **schema**             Schema definition of the current node
 
-**path**               Array of contexts from the root to the current
-node
+**path**               Array of contexts from the root to the current node
 
-**onUpdate**           Callback invoked when the root object should be
+**publishData**        Return data object to external caller
+
+**goToPath**           Move to path formatted string "field1 / field2 / ...", if this path exists
+
+**onContextChange**    Callback which is called on context change and returns array of fields
+
+
 passed to an external consumer
   -----------------------------------------------------------------------
 
