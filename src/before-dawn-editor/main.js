@@ -32,6 +32,7 @@ export const setByPath = (ctx, value) => {
 };
 
 export const convertContextsToCards = (contexts, render) => contexts.map((ctx, index) => {
+    /* TODO may be useless
     if (isDrillable(ctx.schema.type)) {
         const leftCtx = findClosedLeftComplexCtx(contexts, index);
         if (leftCtx) {
@@ -42,6 +43,7 @@ export const convertContextsToCards = (contexts, render) => contexts.map((ctx, i
             ctx.right = rightCtx;
         }
     }
+     */
     return card(ctx, render);
 });
 

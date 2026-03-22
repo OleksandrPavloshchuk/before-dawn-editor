@@ -1,5 +1,5 @@
 import {action, div, span} from "./dom.js";
-import {getRootCtx, render} from "./main.js";
+import {getRootCtx} from "./main.js";
 
 export const titleDiv = (ctx) => {
     const children = [];
@@ -17,6 +17,7 @@ export const titleDiv = (ctx) => {
 const titleWithNavigation = (ctx) => {
     const name = span({"class": "large"}, [ctx.name]);
     const titleWithNavigation = [];
+    /* TODO maybe useless
     if (ctx.left) {
         const leftAction = action(
             ctx.left.name,
@@ -24,7 +25,9 @@ const titleWithNavigation = (ctx) => {
             () => render(ctx.left));
         titleWithNavigation.push(leftAction);
     }
+     */
     titleWithNavigation.push(name);
+    /* TODO maybe useless
     if (ctx.right) {
         const rightAction = action(
             ctx.right.name,
@@ -32,5 +35,7 @@ const titleWithNavigation = (ctx) => {
             () => render(ctx.right));
         titleWithNavigation.push(rightAction);
     }
+
+     */
     return titleWithNavigation;
 }
