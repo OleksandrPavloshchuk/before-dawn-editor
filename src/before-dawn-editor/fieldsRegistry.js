@@ -9,12 +9,9 @@ import {staticSelectField} from "./fields/staticSelect.js";
 import {emailField} from "./fields/email.js";
 import {structField} from "./fields/struct.js";
 import {arrayField} from "./fields/array.js";
+import {macroField} from "./fields/macro.js";
 
 const fieldsRegistry = new Map();
-
-export const isDrillable = (key) => {
-    return getField(key).type === "drillable";
-}
 
 // TODO set the list of fields to register:
 export const registerFields = () => {
@@ -57,6 +54,7 @@ export const getField = (key) => {
 }
 
 const registerBaseFields = () => {
+    registerField(macroField);
     registerField(structField);
     registerField(arrayField);
     registerField(checkBoxField);

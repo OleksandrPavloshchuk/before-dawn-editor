@@ -1,3 +1,5 @@
+import {addressField} from "../cutom_fields/address.js";
+
 export const personSample = {
     schema: {
         name: "person",
@@ -18,25 +20,7 @@ export const personSample = {
                 name: "birthday",
                 type: "base/date"
             },
-            {
-                name: "address",
-                type: "base/struct",
-                fields: [
-                    {
-                        name: "country",
-                        type: "base/staticSelect",
-                        values: ["US", "UK", "GE", "FR", "UA", "PL"]
-                    },
-                    {
-                        name: "city",
-                        type: "base/text"
-                    },
-                    {
-                        name: "street",
-                        type: "base/text"
-                    }
-                ]
-            },
+            addressField("mainAddress"),
             {
                 name: "emails",
                 type: "base/array",
@@ -52,7 +36,7 @@ export const personSample = {
         firstName: "John",
         secondName: "Dow",
         birthday: "2000-07-12",
-        address: {
+        mainAddress: {
             country: "US",
             city: "Atlanta",
             street: "Peach str. 12/14"

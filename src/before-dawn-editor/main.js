@@ -143,27 +143,3 @@ const navigationDiv = (path) => {
             [ctx.name]);
     return div({"class": "navigation vertical-gap"}, path.map(toSpan));
 }
-
-/*
-
-const findClosedLeftComplexCtx = (contexts, index) => {
-    for (let i = index - 1; i >= 0; i--) {
-        const ctx = contexts[i];
-        if (isDrillable(ctx.schema.type)) {
-            return ctx;
-        }
-    }
-    return undefined;
-};
-
-const findClosedRightComplexCtx = (contexts, index) => {
-    for (let i = index + 1; i < contexts.length; i++) {
-        const ctx = contexts[i];
-        if (isDrillable(ctx.schema.type)) {
-            return ctx;
-        }
-    }
-    return undefined;
-};
-
-*/
