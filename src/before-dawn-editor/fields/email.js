@@ -1,5 +1,6 @@
 import {setByPath} from "../main.js";
 import {input} from "../dom.js";
+import {field} from "./base.js";
 
 export const emailField = {
     name: "base/email",
@@ -17,3 +18,5 @@ export const emailField = {
         });
     }
 }
+
+export const fEmail =  (name = undefined) => field("base/email", name);

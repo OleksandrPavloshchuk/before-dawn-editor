@@ -1,5 +1,6 @@
 import {setByPath} from "../main.js";
 import {input} from "../dom.js";
+import {field} from "./base.js";
 
 export const numberField = {
     name: "base/number",
@@ -7,7 +8,7 @@ export const numberField = {
     renderAsCard: (ctx) => {
         const onInput = (e) => setByPath(ctx, e.target.value);
 
-        return input( {
+        return input({
             name: ctx.name,
             id: ctx.name,
             value: ctx.data.toString(),
@@ -17,3 +18,5 @@ export const numberField = {
         });
     }
 }
+
+export const fNumber =  (name = undefined) => field("base/number", name);

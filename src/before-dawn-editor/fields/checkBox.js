@@ -1,5 +1,6 @@
 import {setByPath} from "../main.js";
 import {input} from "../dom.js";
+import {field} from "./base.js";
 
 export const checkBoxField = {
     name: "base/boolean",
@@ -9,3 +10,5 @@ export const checkBoxField = {
         return input({ type: "checkbox", checked: ctx.data, onChange });
     }
 }
+
+export const fBoolean =  (name = undefined) => field("base/boolean", name);

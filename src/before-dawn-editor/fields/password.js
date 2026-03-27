@@ -1,5 +1,6 @@
 import {setByPath} from "../main.js";
 import {input} from "../dom.js";
+import {field} from "./base.js";
 
 export const passwordField = {
     name: "base/password",
@@ -17,3 +18,5 @@ export const passwordField = {
         });
     }
 }
+
+export const fStaticText =  (name = undefined) => field("base/password", name);

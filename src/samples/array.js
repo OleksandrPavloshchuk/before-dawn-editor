@@ -1,9 +1,7 @@
+import {fArray} from "../before-dawn-editor/fields/array.js";
+import {fNumber} from "../before-dawn-editor/fields/number.js";
+
 export const arraySample = {
-    schema: {
-        name: "array",
-        type: "base/array",
-        item: {type: "base/number"},
-        prototype: 0
-    },
+    schema: fArray(fNumber(), 0, "array"),
     data: []
 };

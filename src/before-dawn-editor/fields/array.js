@@ -1,6 +1,9 @@
 import {convertContextsToCards, newPath, render} from "../main.js";
 import {action, actionDanger, div, elem, span} from "../dom.js";
 import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
+import {field} from "./base.js";
+
+const TYPE = "base/array";
 
 const renderAsDesk = (ctx) => {
     if (!ctx || !ctx.data) {
@@ -26,7 +29,7 @@ const createChildCtxByIndex = (ctx, index) => {
 const createChildCtxByName = (ctx, name) => createChildCtxByIndex(ctx, Number.parseInt(name));
 
 export const arrayField = {
-    name: "base/array",
+    name: TYPE,
     type: "drillable",
 
     renderAsCard: (ctx) =>
@@ -48,6 +51,9 @@ export const arrayField = {
     createChildCtxByName
 
 }
+
+export const fArray =  (item, prototype, name = undefined) =>
+    field(TYPE, name, {item, prototype});
 
 const renderFrameForArrayItem = (ctx, content) => div(
     {"class": "item", "id": createCardId(ctx)},

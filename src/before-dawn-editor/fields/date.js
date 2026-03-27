@@ -1,5 +1,6 @@
 import {setByPath} from "../main.js";
 import {input} from "../dom.js";
+import {field} from "./base.js";
 
 export const dateField = {
     name: "base/date",
@@ -17,3 +18,5 @@ export const dateField = {
         });
     }
 }
+
+export const fDate =  (name = undefined) => field("base/date", name);

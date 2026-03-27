@@ -1,6 +1,7 @@
 import {convertContextsToCards, newPath} from "../main.js";
 import {div, span} from "../dom.js";
 import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
+import {field} from "./base.js";
 
 const createChildCtxByIndex = (ctx, index) => {
     const field = ctx.schema.fields[index];
@@ -27,8 +28,10 @@ const renderAsDesk = (ctx) => {
     return convertContextsToCards(contexts, renderFrameForStructItem);
 };
 
+const TYPE = "base/struct";
+
 export const structField = {
-    name: "base/struct",
+    name: TYPE,
     type: "drillable",
 
     renderAsCard: (ctx) =>
@@ -47,3 +50,6 @@ const renderFrameForStructItem = (ctx, content) => div(
     {"class": "item", "id": createCardId(ctx)},
     [cardTitle(ctx), div({"class": "content"}, [content])]
 );
+
+export const fStruct =  ( fields = [], name = undefined) =>
+    field(TYPE, name, {fields});
