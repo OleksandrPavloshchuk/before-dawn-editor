@@ -4,18 +4,18 @@ import {personSample} from "./samples/person.js";
 import {matrixSample} from "./samples/matrix.js";
 import {arraySample} from "./samples/array.js";
 
-const toContext = (sample) => {
+const toContext = (sample, name) => {
     return {
-        name: sample.schema.name,
+        name,
         schema: sample.schema,
         data: sample.data
     }
 }
 
 const contexts = [
-    toContext(personSample),
-    toContext(matrixSample),
-    toContext(arraySample)
+    toContext(personSample, "person"),
+    toContext(matrixSample, "matrix"),
+    toContext(arraySample, "array")
 ];
 
 document

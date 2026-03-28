@@ -2,8 +2,10 @@ import {setByPath} from "../main.js";
 import {input} from "../dom.js";
 import {field} from "./base.js";
 
+const TYPE = "base/boolean";
+
 export const checkBoxField = {
-    name: "base/boolean",
+    name: TYPE,
     type: "leaf",
     renderAsCard: (ctx) => {
         const onChange = (e) => setByPath(ctx, e.target.checked);
@@ -11,4 +13,4 @@ export const checkBoxField = {
     }
 }
 
-export const fBoolean =  (name = undefined) => field("base/boolean", name);
+export const fBoolean =  (name = undefined) => field(TYPE, name);

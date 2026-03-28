@@ -25,21 +25,7 @@ export const setByPath = (ctx, value) => {
     parent[last] = value;
 };
 
-export const convertContextsToCards = (contexts, render) => contexts.map((ctx, index) => {
-    /* TODO may be useless
-    if (isDrillable(ctx.schema.type)) {
-        const leftCtx = findClosedLeftComplexCtx(contexts, index);
-        if (leftCtx) {
-            ctx.left = leftCtx;
-        }
-        const rightCtx = findClosedRightComplexCtx(contexts, index);
-        if (rightCtx) {
-            ctx.right = rightCtx;
-        }
-    }
-     */
-    return card(ctx, render);
-});
+export const convertContextsToCards = (contexts, render) => contexts.map((ctx) => card(ctx, render));
 
 export const newPath = (ctx) => [...ctx.path, ctx];
 

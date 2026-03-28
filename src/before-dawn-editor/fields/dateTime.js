@@ -2,8 +2,10 @@ import {setByPath} from "../main.js";
 import {input} from "../dom.js";
 import {field} from "./base.js";
 
+const TYPE = "base/dateTime";
+
 export const dateTimeField = {
-    name: "base/dateTime",
+    name: TYPE,
     type: "leaf",
     renderAsCard: (ctx) => {
         const onInput = (e) => setByPath(ctx, e.target.value);
@@ -19,4 +21,4 @@ export const dateTimeField = {
     }
 }
 
-export const fDateTime =  (name = undefined) => field("base/dateTime", name);
+export const fDateTime =  (name = undefined) => field(TYPE, name);
