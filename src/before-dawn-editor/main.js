@@ -41,13 +41,10 @@ export async function resolveNode(node) {
 
     if (node.type === "restSource") {
         const res = await fetch(node.endpoint);
-
         let data = await res.json();
         if (node.path) {
-            // TODO resolve the path
-            data = data[node.path];
+            data = resolvePath(data, node.path);
         }
-
         return data.slice(0, node.limit);
     }
 
@@ -67,6 +64,21 @@ export async function resolveNode(node) {
 }
 
 // private functions
+
+const resolvePath = (obj, path) => {
+    if (!path) {
+        return obj;
+    }
+
+    return path
+        .split(".")
+        .reduce((acc, key) => {
+            if (acc == null) {
+                return undefined;
+            }
+            return acc[key];
+        }, obj);
+};
 
 const goTo = (ctx, pathStr) => {
     try {
