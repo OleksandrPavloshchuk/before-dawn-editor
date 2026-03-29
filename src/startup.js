@@ -3,6 +3,7 @@ import {render} from "./before-dawn-editor/main.js";
 import {personSample} from "./samples/person.js";
 import {matrixSample} from "./samples/matrix.js";
 import {arraySample} from "./samples/array.js";
+import {usersSample} from "./samples/users.js";
 
 const toContext = (sample, name) => {
     return {
@@ -15,7 +16,8 @@ const toContext = (sample, name) => {
 const contexts = [
     toContext(personSample, "person"),
     toContext(matrixSample, "matrix"),
-    toContext(arraySample, "array")
+    toContext(arraySample, "array"),
+    toContext(usersSample, "users")
 ];
 
 document
@@ -35,6 +37,12 @@ document
     .addEventListener( "click", (e) => {
         e.preventDefault();
         renderSample(2);
+    });
+document
+    .getElementById("usersSample")
+    .addEventListener( "click", (e) => {
+        e.preventDefault();
+        renderSample(3);
     });
 
 const renderSample = (index) => {

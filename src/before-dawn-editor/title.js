@@ -1,5 +1,5 @@
 import {action, div, span} from "./dom.js";
-import {getRootCtx} from "./main.js";
+import {getRootCtx, resolveNode} from "./main.js";
 
 export const titleDiv = (ctx) => {
     const children = [];
@@ -8,7 +8,10 @@ export const titleDiv = (ctx) => {
         const showObjectAction = action(
             "Publish Data",
             "",
-            () => ctx.publishData(getRootCtx(ctx).data));
+            () => {
+                resolveNode(getRootCtx(ctx).data)
+                    .then((data) => ctx.publishData(data));
+            });
         children.push(showObjectAction);
     }
     return div({"class": "title vertical-gap"}, children);
@@ -17,25 +20,6 @@ export const titleDiv = (ctx) => {
 const titleWithNavigation = (ctx) => {
     const name = span({"class": "large"}, [ctx.name]);
     const titleWithNavigation = [];
-    /* TODO maybe useless
-    if (ctx.left) {
-        const leftAction = action(
-            ctx.left.name,
-            "",
-            () => render(ctx.left));
-        titleWithNavigation.push(leftAction);
-    }
-     */
     titleWithNavigation.push(name);
-    /* TODO maybe useless
-    if (ctx.right) {
-        const rightAction = action(
-            ctx.right.name,
-            "",
-            () => render(ctx.right));
-        titleWithNavigation.push(rightAction);
-    }
-
-     */
     return titleWithNavigation;
 }

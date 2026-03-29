@@ -1,6 +1,6 @@
-import {convertContextsToCards, newPath} from "../main.js";
-import {div, span} from "../dom.js";
-import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
+import {convertContextsToCards, newPath} from "../../main.js";
+import {div, span} from "../../dom.js";
+import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../../card.js";
 import {field} from "./base.js";
 
 const createChildCtxByIndex = (ctx, index) => {

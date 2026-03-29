@@ -1,10 +1,10 @@
-import {setByPath} from "../main.js";
-import {input} from "../dom.js";
+import {setByPath} from "../../main.js";
+import {input} from "../../dom.js";
 import {field} from "./base.js";
 
-const TYPE = "base/dateTime";
+const TYPE = "base/email";
 
-export const dateTimeField = {
+export const emailField = {
     name: TYPE,
     type: "leaf",
     renderAsCard: (ctx) => {
@@ -14,11 +14,11 @@ export const dateTimeField = {
             name: ctx.name,
             id: ctx.name,
             value: ctx.data,
-            type: "datetime-local",
+            type: "email",
             autocomplete: "false",
             onInput
         });
     }
 }
 
-export const fDateTime =  (name = undefined) => field(TYPE, name);
+export const fEmail =  (name = undefined) => field(TYPE, name);

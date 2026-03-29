@@ -1,10 +1,10 @@
 import {fAddress} from "../custom_fields/address.js";
-import {fNumber} from "../before-dawn-editor/fields/number.js";
-import {fText} from "../before-dawn-editor/fields/text.js";
-import {fDate} from "../before-dawn-editor/fields/date.js";
-import {fEmail} from "../before-dawn-editor/fields/email.js";
-import {fArray} from "../before-dawn-editor/fields/array.js";
-import {fStruct} from "../before-dawn-editor/fields/struct.js";
+import {fNumber} from "../before-dawn-editor/fields/base/number.js";
+import {fText} from "../before-dawn-editor/fields/base/text.js";
+import {fDate} from "../before-dawn-editor/fields/base/date.js";
+import {fEmail} from "../before-dawn-editor/fields/base/email.js";
+import {fArray} from "../before-dawn-editor/fields/base/array.js";
+import {fStruct} from "../before-dawn-editor/fields/base/struct.js";
 
 export const personSample = {
     schema: fStruct( [

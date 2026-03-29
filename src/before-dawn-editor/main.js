@@ -37,6 +37,35 @@ export const getRootCtx = (ctx, visited = new Set()) => {
     return (!ctx.parent) ? ctx : getRootCtx(ctx.parent, visited);
 }
 
+export async function resolveNode(node) {
+
+    if (node.type === "restSource") {
+        const res = await fetch(node.endpoint);
+
+        let data = await res.json();
+        if (node.path) {
+            // TODO resolve the path
+            data = data[node.path];
+        }
+
+        return data.slice(0, node.limit);
+    }
+
+    if (Array.isArray(node)) {
+        return Promise.all(node.map(resolveNode));
+    }
+
+    if (typeof node === "object") {
+        const entries = await Promise.all(
+            Object.entries(node).map(async ([k, v]) => [k, await resolveNode(v)])
+        );
+
+        return Object.fromEntries(entries);
+    }
+
+    return node;
+}
+
 // private functions
 
 const goTo = (ctx, pathStr) => {

@@ -1,9 +1,11 @@
-import {setByPath} from "../main.js";
-import {input} from "../dom.js";
+import {setByPath} from "../../main.js";
+import {input} from "../../dom.js";
 import {field} from "./base.js";
 
+const TYPE = "base/text";
+
 export const textField = {
-    name: "base/text",
+    name: TYPE,
     type: "leaf",
     renderAsCard: (ctx) => {
         const onInput = (e) => setByPath(ctx, e.target.value);
@@ -19,4 +21,4 @@ export const textField = {
     }
 }
 
-export const fText =  (name = undefined) => field("base/text", name);
+export const fText =  (name = undefined) => field(TYPE, name);

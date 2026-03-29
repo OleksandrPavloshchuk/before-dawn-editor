@@ -1,14 +1,14 @@
-import {textField} from "./fields/text.js";
-import {passwordField} from "./fields/password.js";
-import {dateField} from "./fields/date.js";
-import {dateTimeField} from "./fields/dateTime.js";
-import {staticTextField} from "./fields/staticText.js";
-import {numberField} from "./fields/number.js";
-import {checkBoxField} from "./fields/checkBox.js";
-import {staticSelectField} from "./fields/staticSelect.js";
-import {emailField} from "./fields/email.js";
-import {structField} from "./fields/struct.js";
-import {arrayField} from "./fields/array.js";
+import {textField} from "./fields/base/text.js";
+import {passwordField} from "./fields/base/password.js";
+import {dateField} from "./fields/base/date.js";
+import {dateTimeField} from "./fields/base/dateTime.js";
+import {staticTextField} from "./fields/base/staticText.js";
+import {numberField} from "./fields/base/number.js";
+import {checkBoxField} from "./fields/base/checkBox.js";
+import {staticSelectField} from "./fields/base/staticSelect.js";
+import {emailField} from "./fields/base/email.js";
+import {structField} from "./fields/base/struct.js";
+import {arrayField} from "./fields/base/array.js";
 
 const fieldsRegistry = new Map();
 

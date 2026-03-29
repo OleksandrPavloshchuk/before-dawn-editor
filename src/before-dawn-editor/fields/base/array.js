@@ -1,6 +1,6 @@
-import {convertContextsToCards, newPath, render} from "../main.js";
-import {action, actionDanger, div, elem, span} from "../dom.js";
-import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../card.js";
+import {convertContextsToCards, newPath, render} from "../../main.js";
+import {action, actionDanger, div, elem, span} from "../../dom.js";
+import {ARROW_DOWN, cardTitle, createCardId, drillLinkContent} from "../../card.js";
 import {field} from "./base.js";
 
 const TYPE = "base/array";

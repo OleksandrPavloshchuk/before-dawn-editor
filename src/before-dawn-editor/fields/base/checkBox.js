@@ -1,5 +1,5 @@
-import {setByPath} from "../main.js";
-import {input} from "../dom.js";
+import {setByPath} from "../../main.js";
+import {input} from "../../dom.js";
 import {field} from "./base.js";
 
 const TYPE = "base/boolean";
