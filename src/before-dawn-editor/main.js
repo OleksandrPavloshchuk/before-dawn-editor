@@ -39,13 +39,13 @@ export const getRootCtx = (ctx, visited = new Set()) => {
 
 export async function resolveNode(node) {
 
-    if (node.type === "restSource") {
-        const res = await fetch(node.endpoint);
+    if (node._substitute === "restOnPublish") {
+        const res = await fetch(node._endpoint);
         let data = await res.json();
-        if (node.path) {
-            data = resolvePath(data, node.path);
+        if (node._path) {
+            data = resolvePath(data, node._path);
         }
-        return data.slice(0, node.limit);
+        return data.slice(0, node._limit);
     }
 
     if (Array.isArray(node)) {

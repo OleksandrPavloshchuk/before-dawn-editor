@@ -19,4 +19,4 @@ export const passwordField = {
     }
 }
 
-export const fStaticText =  (name = undefined) => field("base/password", name);
+export const fPassword =  (name = undefined) => field("base/password", name);

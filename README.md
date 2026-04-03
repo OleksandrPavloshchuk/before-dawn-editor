@@ -195,7 +195,8 @@ Available helpers:
 * **fDateTime(name = undefined)** – generates an input with `type="datetime-local"`
 * **fDate(name = undefined)** – generates an input with `type="date"`
 * **fBoolean(name = undefined)** – generates an input with `type="checkbox"`
-* **fArray(item, prototype, name = undefined)** – generates an array of controls defined by an item schema and a prototype value
+* **fArray(options, name = undefined)** – generates an array of controls which are defined in one of the fArrayOption
+* **fArrayOption(schema, prototype, name)** - possibly values of items in array, defined by schema and prototype
 * **fStruct(fields, name = undefined)** – generates a composite field consisting of multiple fields
 * **fRestArray(name = undefined)** – generates an array field that retrieves data from an external RESTful source
 
@@ -211,10 +212,23 @@ fStruct([
     fDate("birthday"),
     fAddress("mainAddress"),
     fAddress("secondaryAddress"),
-    fArray(fEmail(), "user@name.com", "emails")
+    fArray([
+        fArrayOption(fEmail(), () => "user@name.com")
+    ], "emails")
 ], "person")
 
-fArray(fArray(fNumber(), 0), [], "matrix")
+fArray([
+    fArrayOption(fNumber(), () => 0)
+], "array")
+
+fArray([
+        fArrayOption(
+            fArray([
+                fArrayOption(fNumber(), () => 0)
+            ]),
+            () => []
+        )],
+    "matrix")
 
 export const fAddress = (name = undefined) => fStruct([
     fStaticSelect(["US", "UK", "DE", "FR", "UA", "PL"], "country"),
@@ -229,16 +243,21 @@ export const fAddress = (name = undefined) => fStruct([
 
 ```json
 {
-    "id": "1",
-    "firstName": "John",
-    "secondName": "Dow",
-    "birthday": "2000-07-12",
-    "address": {
-        "country": "US",
-        "city": "Atlanta",
-        "street": "Peach str. 12/14"
-    },
-    "emails": ["a@b.c"]
+  "id": "1",
+  "firstName": "John",
+  "secondName": "Dow",
+  "birthday": "2000-07-12",
+  "mainAddress": {
+    "country": "US",
+    "city": "Atlanta",
+    "street": "Peach str. 12/14"
+  },
+  "secondaryAddress": {
+    "country": "UA",
+    "city": "Kyiv",
+    "street": "Peach str. 12/14"
+  },
+  "emails": []
 }
 ```
 
@@ -250,10 +269,10 @@ The editor supports a special field type **fRestArray**, which retrieves data fr
 
 This control internally behaves like an `fStruct` with the following fields:
 
-* **type** – if this hidden field has the value `restSource`, the control treats the field as a request to an external data source
-* **endpoint** – URL of the RESTful data source
-* **path** – path to the required part of the response, in the format `field1.field2.field3`
-* **limit** – maximum number of records to retrieve
+* **_substitute** – if this hidden field has the value `restOnPublish`, the control treats the field as a request to an external data source
+* **_endpoint** – URL of the RESTful data source
+* **_path** – path to the required part of the response, in the format `field1.field2.field3`
+* **_limit** – maximum number of records to retrieve
 
 Example configuration:
 
@@ -266,10 +285,10 @@ export const usersSample = {
     data: {
         title: "this is title",
         users: {
-            type: "restSource",
-            endpoint: "https://dummyjson.com/users",
-            path: "users",
-            limit: 3
+            _substitute: "restOnPublish",
+            _endpoint: "https://dummyjson.com/users",
+            _path: "users",
+            _limit: 3
         }
     }
 };

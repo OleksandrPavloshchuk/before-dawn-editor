@@ -5,16 +5,19 @@ import {fDate} from "../before-dawn-editor/fields/base/date.js";
 import {fEmail} from "../before-dawn-editor/fields/base/email.js";
 import {fArray} from "../before-dawn-editor/fields/base/array.js";
 import {fStruct} from "../before-dawn-editor/fields/base/struct.js";
+import {fArrayOption} from "../before-dawn-editor/fields/base/arrayOption.js";
 
 export const personSample = {
-    schema: fStruct( [
+    schema: fStruct([
         fNumber("id"),
         fText("firstName"),
         fText("secondName"),
         fDate("birthday"),
         fAddress("mainAddress"),
         fAddress("secondaryAddress"),
-        fArray(fEmail(), "user@name.com", "emails")
+        fArray([
+            fArrayOption(fEmail(), () => "user@name.com")
+        ], "emails")
     ], "person"),
     data: {
         id: "1",

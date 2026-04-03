@@ -10,10 +10,10 @@ export const usersSample = {
     data: {
         title: "this is title",
         users: {
-            type: "restSource",
-            endpoint: "https://dummyjson.com/users",
-            path: "users",
-            limit: 3
+            _substitute: "restOnPublish",
+            _endpoint: "https://dummyjson.com/users",
+            _path: "users",
+            _limit: 3
         }
     }
 };

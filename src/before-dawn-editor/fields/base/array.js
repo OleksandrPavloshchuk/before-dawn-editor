@@ -15,10 +15,14 @@ const renderAsDesk = (ctx) => {
 
 const createChildCtxByIndex = (ctx, index) => {
     const data = ctx.data[index];
+
+    // TODO get necessary schema by name in case of several options
+    const schema = ctx.schema.options[0].schema;
+
     return {
         onContextChange: ctx.onContextChange,
         parent: ctx,
-        schema: ctx.schema.item,
+        schema,
         name: `${index}`,
         path: newPath(ctx),
         data,
@@ -52,8 +56,8 @@ export const arrayField = {
 
 }
 
-export const fArray =  (item, prototype, name = undefined) =>
-    field(TYPE, name, {item, prototype});
+export const fArray =  (options, name = undefined) =>
+    field(TYPE, name, {options});
 
 const renderFrameForArrayItem = (ctx, content) => div(
     {"class": "item", "id": createCardId(ctx)},
@@ -71,7 +75,14 @@ const insertItemAfter = (ctx, index) => action(
     `Add new item after ${index}`,
     () => insertNewItemAt(ctx, index + 1)
 );
-const insertNewItemAt = (ctx, pos) => insertAt(ctx, structuredClone(ctx.schema.prototype), pos);
+const insertNewItemAt = (ctx, pos) => {
+    if (ctx.schema.options.length===1) {
+        ctx.schema.prototype = ctx.schema.options[0].prototype;
+        insertAt(ctx, structuredClone(ctx.schema.prototype()), pos);
+    } else {
+        // TODO use more than one option for array items
+    }
+}
 const copyPasteItemAt = (ctx, src, pos) => {
     const deepCopy = structuredClone(ctx.data[src]);
     insertAt(ctx, deepCopy, pos);
