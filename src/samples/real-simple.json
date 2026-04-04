@@ -1,0 +1,43 @@
+{
+  "_include": "/article/ArticlePage.json",
+  "aside": [
+    {
+      "_include": "/form/EmailCaptureForm.json",
+      "title": "Newsletter",
+      "description": "Sed scelerisque aenean turpis massa venenatis orci tincidunt enim urna",
+      "buttonLabelText": "Sign Up",
+      "narrowLayout": true,
+      "setDarkThemeGradient": true,
+      "items": [
+        {
+          "_template": "/form/input/EmailInput.hbs",
+          "inputName": "test-email-field",
+          "placeholder": "Enter your email",
+          "required": true
+        }
+      ]
+    },
+    {
+      "_include": "/page/list/PageListArticle01.json",
+      "backgroundColor": "#f8f5ef",
+      "title": "Related News",
+      "items": [
+        {
+          "_include": "/page/promo/PagePromo.json",
+          "_repeat": 3
+        }
+      ]
+    },
+    {
+      "_include": "/page/list/PageListArticle01.json",
+      "title": "Related Research",
+      "backgroundColor": "#f8f5ef",
+      "items": [
+        {
+          "_include": "/page/promo/PagePromo.json",
+          "_repeat": 3
+        }
+      ]
+    }
+  ]
+}

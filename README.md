@@ -139,7 +139,7 @@ Rendering is **recursive**, meaning structures and arrays can contain other stru
 The `context` object contains the following fields:
 
 | Field               | Description                                                                                          |
-| ------------------- | ---------------------------------------------------------------------------------------------------- |
+|---------------------|------------------------------------------------------------------------------------------------------|
 | **name**            | Name of the structure field or array index                                                           |
 | **parent**          | The root data object                                                                                 |
 | **data**            | Data of the current node                                                                             |
@@ -148,6 +148,8 @@ The `context` object contains the following fields:
 | **publishData**     | Callback returning the data object to the external caller                                            |
 | **goToPath**        | Navigates to a path formatted as `"field1 / field2 / ..."` if it exists                              |
 | **onContextChange** | Callback invoked when the context changes; returns an array of fields passed to an external consumer |
+| **setArrayOptions** | Pass names of possible array item options and position to insert to external caller                  |
+| **selectArrayItem** | Select array item option and position                                                                |
 
 ---
 
@@ -196,7 +198,7 @@ Available helpers:
 * **fDate(name = undefined)** – generates an input with `type="date"`
 * **fBoolean(name = undefined)** – generates an input with `type="checkbox"`
 * **fArray(options, name = undefined)** – generates an array of controls which are defined in one of the fArrayOption
-* **fArrayOption(schema, prototype, name)** - possibly values of items in array, defined by schema and prototype
+* **fArrayOption(schema, prototype, name = "default")** - possibly values of items in array, defined by schema and prototype
 * **fStruct(fields, name = undefined)** – generates a composite field consisting of multiple fields
 * **fRestArray(name = undefined)** – generates an array field that retrieves data from an external RESTful source
 
@@ -213,20 +215,21 @@ fStruct([
     fAddress("mainAddress"),
     fAddress("secondaryAddress"),
     fArray([
-        fArrayOption(fEmail(), () => "user@name.com")
+        fArrayOption(fEmail(), "user@name.com")
     ], "emails")
 ], "person")
 
 fArray([
-    fArrayOption(fNumber(), () => 0)
+    fArrayOption(fNumber(), 0, "number"),
+    fArrayOption(fText(), "Hello World!", "text"),
 ], "array")
 
 fArray([
         fArrayOption(
             fArray([
-                fArrayOption(fNumber(), () => 0)
+                fArrayOption(fNumber(), 0)
             ]),
-            () => []
+            []
         )],
     "matrix")
 
@@ -308,6 +311,7 @@ dist
 │   ├── fields
 │   │   ├── base
 │   │   │   ├── array.js
+│   │   │   ├── arrayOption.js
 │   │   │   ├── base.js
 │   │   │   ├── checkBox.js
 │   │   │   ├── date.js
@@ -332,6 +336,7 @@ dist
 │   ├── array.js
 │   ├── matrix.js
 │   ├── person.js
+│   ├── real-simple.json
 │   └── users.js
 └── startup.js
 ```
@@ -349,6 +354,7 @@ dist
 5. (2026/03/28) Collapse all, expand all, collapse all except the current node
 6. (2026/03/28) Schemas as code; custom fields built on top of basic ones
 7. (2026/03/29) Field retrieving content from an external RESTful service (array)
+8. (2026/04/04) Different types of array items
 
 ### Planned features
 

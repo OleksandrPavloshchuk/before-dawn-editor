@@ -5,7 +5,7 @@ import {getFieldRenderer} from "./fieldsRegistry.js";
 export const card = (ctx, renderFrame) => renderFrame(ctx, getFieldRenderer(ctx.schema.type)(ctx));
 
 export const cardTitle = (ctx) => div({"class": "title"}, [
-    div({},[ctx.name, expandOneFieldAction(ctx), expandAllFieldsAction(ctx)])
+    ctx.name, expandOneFieldAction(ctx), expandAllFieldsAction(ctx)
 ]);
 
 export const createCardId = (ctx) => `cardField_${ctx.name}`;

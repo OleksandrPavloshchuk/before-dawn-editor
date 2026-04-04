@@ -1,7 +1,7 @@
 export const fArrayOption = (schema, prototype, name = "default") => {
     return {
         schema,
-        prototype: () => prototype,
+        prototype: () => typeof prototype === "function" ? prototype() : structuredClone(prototype),
         name
     };
 };
