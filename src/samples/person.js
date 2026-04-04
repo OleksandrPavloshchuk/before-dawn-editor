@@ -16,7 +16,7 @@ export const personSample = {
         fAddress("mainAddress"),
         fAddress("secondaryAddress"),
         fArray([
-            fArrayOption(fEmail(), () => "user@name.com")
+            fArrayOption(fEmail(),  "user@name.com")
         ], "emails")
     ], "person"),
     data: {

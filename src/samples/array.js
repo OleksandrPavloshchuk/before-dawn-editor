@@ -4,7 +4,7 @@ import {fArrayOption} from "../before-dawn-editor/fields/base/arrayOption.js";
 
 export const arraySample = {
     schema: fArray([
-        fArrayOption(fNumber(), () => 0)
+        fArrayOption(fNumber(), 0)
     ], "array"),
     data: []
 };

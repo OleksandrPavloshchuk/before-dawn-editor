@@ -6,9 +6,9 @@ export const matrixSample = {
     schema: fArray([
         fArrayOption(
             fArray([
-                fArrayOption(fNumber(), () => 0)
+                fArrayOption(fNumber(), 0)
             ]),
-            () => []
+            []
         )],
         "matrix"),
     data: []
