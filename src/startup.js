@@ -45,6 +45,9 @@ document
         renderSample(3);
     });
 
+// TODO find better solution than storing in global variable
+let arrayPos;
+
 const renderSample = (index) => {
     const ctx = contexts[index];
     if (ctx) {
@@ -64,6 +67,19 @@ const renderSample = (index) => {
                 editor.value = val;
             }
         };
+        ctx.setArrayOptions = (options, pos) => {
+            arrayPos = pos;
+            const select = document.getElementById("temp-select-array-option");
+            if (select) {
+                select.replaceChildren();
+                options.forEach((item) => {
+                    const option = document.createElement("option");
+                    option.appendChild(document.createTextNode(item));
+                    option.setAttribute("value", item);
+                    select.appendChild(option);
+                });
+            }
+        };
         render(ctx);
         document
             .getElementById("temp-do-search")
@@ -71,6 +87,16 @@ const renderSample = (index) => {
                 const editor = document.getElementById("temp-search-path");
                 if (editor && ctx.goToPath) {
                     ctx.goToPath(editor.value);
+                }
+            });
+        document
+            .getElementById("temp-do-select-array-option")
+            .addEventListener("click", (e) => {
+                const select = document.getElementById("temp-select-array-option");
+                if (select && select.firstChild && ctx.selectArrayItem) {
+                    ctx.selectArrayItem(ctx, select.value, arrayPos);
+                    select.replaceChildren();
+                    arrayPos = undefined;
                 }
             });
     }

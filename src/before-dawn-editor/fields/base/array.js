@@ -5,22 +5,30 @@ import {field} from "./base.js";
 
 const TYPE = "base/array";
 
+const selectArrayItem = (ctx, name, pos) => {
+    const schemaIdx = ctx.schema.options.findIndex((item) => item.name===name);
+    ctx.schema.prototype = ctx.schema.options[schemaIdx].prototype;
+    insertAt(ctx, structuredClone(ctx.schema.prototype()), pos, name);
+};
+
 const renderAsDesk = (ctx) => {
     if (!ctx || !ctx.data) {
         throw new Error("Object does not exist.");
     }
+    ctx.selectArrayItem = selectArrayItem;
     const contexts = ctx.data.map((_, index) => createChildCtxByIndex(ctx, index));
     return convertContextsToCards(contexts, renderFrameForArrayItem);
 };
 
 const createChildCtxByIndex = (ctx, index) => {
     const data = ctx.data[index];
-
-    // TODO get necessary schema by name in case of several options
-    const schema = ctx.schema.options[0].schema;
+    const optionName = ctx.schema.arrayOptions[index];
+    const schemaIdx = ctx.schema.options.findIndex((item) => item.name===optionName);
+    const schema = ctx.schema.options[schemaIdx].schema;
 
     return {
         onContextChange: ctx.onContextChange,
+        setArrayOptions: ctx.setArrayOptions,
         parent: ctx,
         schema,
         name: `${index}`,
@@ -80,7 +88,8 @@ const insertNewItemAt = (ctx, pos) => {
         ctx.schema.prototype = ctx.schema.options[0].prototype;
         insertAt(ctx, structuredClone(ctx.schema.prototype()), pos, "default");
     } else {
-        // TODO use more than one option for array items
+        const optionNames = ctx.schema.options.map( (item) => item.name );
+        ctx.setArrayOptions(optionNames, pos);
     }
 }
 const copyPasteItemAt = (ctx, src, pos) => {

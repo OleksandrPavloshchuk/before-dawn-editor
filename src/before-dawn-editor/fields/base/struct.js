@@ -7,6 +7,7 @@ const createChildCtxByIndex = (ctx, index) => {
     const field = ctx.schema.fields[index];
     return {
         onContextChange: ctx.onContextChange,
+        setArrayOptions: ctx.setArrayOptions,
         parent: ctx,
         schema: field,
         name: field.name,
