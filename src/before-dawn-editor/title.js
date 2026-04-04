@@ -4,15 +4,28 @@ import {getRootCtx, resolveNode} from "./main.js";
 export const titleDiv = (ctx) => {
     const children = [];
     children.push(div({}, [titleWithNavigation(ctx)]));
+    const actions = [];
+    if (ctx.saveContext) {
+        const saveContextAction = action(
+            "Save Context",
+            "",
+            () => {
+                ctx.saveContext(ctx);
+            });
+        actions.push(saveContextAction);
+    }
     if (ctx.publishData) {
-        const showObjectAction = action(
+        const publishDataAction = action(
             "Publish Data",
             "",
             () => {
                 resolveNode(getRootCtx(ctx).data)
                     .then((data) => ctx.publishData(data));
             });
-        children.push(showObjectAction);
+        actions.push(publishDataAction);
+    }
+    if (actions.length > 0) {
+        children.push(div({"class": "right"}, actions));
     }
     return div({"class": "title vertical-gap"}, children);
 }

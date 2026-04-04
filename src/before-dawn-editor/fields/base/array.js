@@ -57,7 +57,7 @@ export const arrayField = {
 }
 
 export const fArray =  (options, name = undefined) =>
-    field(TYPE, name, {options});
+    field(TYPE, name, {options, arrayOptions: []});
 
 const renderFrameForArrayItem = (ctx, content) => div(
     {"class": "item", "id": createCardId(ctx)},
@@ -78,18 +78,21 @@ const insertItemAfter = (ctx, index) => action(
 const insertNewItemAt = (ctx, pos) => {
     if (ctx.schema.options.length===1) {
         ctx.schema.prototype = ctx.schema.options[0].prototype;
-        insertAt(ctx, structuredClone(ctx.schema.prototype()), pos);
+        insertAt(ctx, structuredClone(ctx.schema.prototype()), pos, "default");
     } else {
         // TODO use more than one option for array items
     }
 }
 const copyPasteItemAt = (ctx, src, pos) => {
     const deepCopy = structuredClone(ctx.data[src]);
-    insertAt(ctx, deepCopy, pos);
+    const arrayOption = ctx.schema.arrayOptions[src];
+    insertAt(ctx, deepCopy, pos, arrayOption);
 };
 
-const insertAt = (ctx, item, pos) => {
+const insertAt = (ctx, item, pos, arrayOption) => {
     ctx.data.splice(pos, 0, item);
+    ctx.schema.arrayOptions.splice(pos, 0, arrayOption);
+
     // TODO do not redraw all control
     render(ctx);
 }
@@ -149,6 +152,7 @@ const removeItem = (ctx, pos) => actionDanger(
     `Remove item ${pos}`,
     () => {
         ctx.data.splice(pos, 1);
+        ctx.schema.arrayOptions.splice(pos, 1);
         // TODO do not redraw all control
         render(ctx);
     });
@@ -161,9 +165,14 @@ const swapItems = (ctx, text, index1, index2, size) => {
         text,
         `Swap items ${index1} and ${index2}`,
         () => {
-            const temp = ctx.data[index1];
+            const tempData = ctx.data[index1];
             ctx.data[index1] = ctx.data[index2];
-            ctx.data[index2] = temp;
+            ctx.data[index2] = tempData;
+
+            const tempOption = ctx.schema.arrayOptions[index1];
+            ctx.schema.arrayOptions[index1] = ctx.schema.arrayOptions[index2];
+            ctx.schema.arrayOptions[index2] = tempOption;
+
             // TODO do not redraw all control
             render(ctx);
         });

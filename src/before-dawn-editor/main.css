@@ -16,7 +16,6 @@ body {
     color: #3366CC;
     cursor: pointer;
     border: 1px solid rgba(0, 0, 0, 0);
-    margin-left: auto;
 }
 
 .link:hover {
@@ -68,6 +67,16 @@ body {
 }
 
 .title .link {
+    margin-left: auto;
+    padding: 10px;
+}
+
+.title {
+    display: flex;
+    align-items: center;
+}
+
+.title .right {
     margin-left: auto;
 }
 
