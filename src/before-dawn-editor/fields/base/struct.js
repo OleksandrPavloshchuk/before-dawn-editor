@@ -17,7 +17,7 @@ const createChildCtxByIndex = (ctx, index) => {
 }
 
 const createChildCtxByName = (ctx, name) => {
-    const index = ctx.schema.fields.findIndex( (item) => item.name === name);
+    const index = ctx.schema.fields.findIndex((item) => item.name === name);
     if (index < 0) {
         throw new Error("Object does not exist.");
     }
@@ -35,8 +35,16 @@ export const structField = {
     name: TYPE,
     type: "drillable",
 
-    renderAsCard: (ctx) =>
-        drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"])),
+    renderAsCard: (ctx) => {
+        const divs = [];
+
+        const insideArray = ctx.path && ctx.path.length>1 && ctx.path[ctx.path.length-1].schema.type === "base/array";
+        if (insideArray) {
+            divs.push(div({"class": "tag"}, [ctx.schema.name ?? '']));
+        }
+        divs.push(drillLinkContent(ctx, span({"class": "link"}, ["{ " + ARROW_DOWN + " }"])));
+        return div({}, [divs]);
+    },
 
     renderAsDesk,
 
@@ -52,5 +60,5 @@ const renderFrameForStructItem = (ctx, content) => div(
     [cardTitle(ctx), div({"class": "content"}, [content])]
 );
 
-export const fStruct =  ( fields = [], name = undefined) =>
+export const fStruct = (fields = [], name = undefined) =>
     field(TYPE, name, {fields});
