@@ -2,6 +2,7 @@ import {card} from "./card.js";
 import {div, getRoot, span} from "./dom.js";
 import {getField, getFieldRenderer, registerFields} from "./fieldsRegistry.js";
 import {titleDiv} from "./title.js";
+import {restOnPublishArrayPreprocessor} from "./preprocessors/restOnPublishArray.js";
 
 export const render = (ctx) => {
     registerFields();
@@ -39,13 +40,8 @@ export const getRootCtx = (ctx, visited = new Set()) => {
 
 export async function resolveNode(node) {
 
-    if (node._substitute === "restOnPublish") {
-        const res = await fetch(node._endpoint);
-        let data = await res.json();
-        if (node._path) {
-            data = resolvePath(data, node._path);
-        }
-        return data.slice(0, node._limit);
+    if (restOnPublishArrayPreprocessor.needProcessing(node)) {
+        return restOnPublishArrayPreprocessor.process(node);
     }
 
     if (Array.isArray(node)) {
@@ -63,9 +59,7 @@ export async function resolveNode(node) {
     return node;
 }
 
-// private functions
-
-const resolvePath = (obj, path) => {
+export const resolvePath = (obj, path) => {
     if (!path) {
         return obj;
     }
@@ -79,6 +73,8 @@ const resolvePath = (obj, path) => {
             return acc[key];
         }, obj);
 };
+
+// private functions
 
 const goTo = (ctx, pathStr) => {
     try {

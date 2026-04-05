@@ -281,17 +281,17 @@ Example configuration:
 
 ```javascript
 export const usersSample = {
-    schema: fStruct([
+    schema: fStruct( [
         fText("title"),
         fRestArray("users")
     ], "users"),
     data: {
         title: "this is title",
         users: {
-            _substitute: "restOnPublish",
-            _endpoint: "https://dummyjson.com/users",
-            _path: "users",
-            _limit: 3
+            $substitute: restOnPublishArrayPreprocessor.discriminator,
+            [restOnPublishArrayPreprocessor.endpoint]: "https://dummyjson.com/users",
+            [restOnPublishArrayPreprocessor.path]: "users",
+            [restOnPublishArrayPreprocessor.limit]: 3
         }
     }
 };

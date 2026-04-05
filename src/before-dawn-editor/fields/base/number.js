@@ -6,7 +6,7 @@ export const numberField = {
     name: "base/number",
     type: "leaf",
     renderAsCard: (ctx) => {
-        const onInput = (e) => setByPath(ctx, e.target.value);
+        const onInput = (e) => setByPath(ctx, Number(e.target.value));
 
         return input({
             name: ctx.name,
