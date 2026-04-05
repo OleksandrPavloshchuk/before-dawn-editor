@@ -5,17 +5,15 @@ import {field} from "./base.js";
 
 const TYPE = "base/array";
 
-const selectArrayItem = (ctx, name, pos) => {
+export const selectArrayItem = (ctx, name, pos) => {
     const schemaIdx = ctx.schema.options.findIndex((item) => item.name===name);
-    ctx.schema.prototype = ctx.schema.options[schemaIdx].prototype;
-    insertAt(ctx, structuredClone(ctx.schema.prototype()), pos, name);
+    insertOptionAt(ctx, pos, schemaIdx, name);
 };
 
 const renderAsDesk = (ctx) => {
     if (!ctx || !ctx.data) {
         throw new Error("Object does not exist.");
     }
-    ctx.selectArrayItem = selectArrayItem;
     const contexts = ctx.data.map((_, index) => createChildCtxByIndex(ctx, index));
     return convertContextsToCards(contexts, renderFrameForArrayItem);
 };
@@ -25,7 +23,6 @@ const createChildCtxByIndex = (ctx, index) => {
     const optionName = ctx.schema.arrayOptions[index];
     const schemaIdx = ctx.schema.options.findIndex((item) => item.name===optionName);
     const schema = ctx.schema.options[schemaIdx].schema;
-
     return {
         onContextChange: ctx.onContextChange,
         setArrayOptions: ctx.setArrayOptions,
@@ -85,13 +82,22 @@ const insertItemAfter = (ctx, index) => action(
 );
 const insertNewItemAt = (ctx, pos) => {
     if (ctx.schema.options.length===1) {
-        ctx.schema.prototype = ctx.schema.options[0].prototype;
-        insertAt(ctx, structuredClone(ctx.schema.prototype()), pos, "default");
+        insertOptionAt(ctx, pos, 0, "default");
     } else {
         const optionNames = ctx.schema.options.map( (item) => item.name );
-        ctx.setArrayOptions(optionNames, pos);
+        ctx.setArrayOptions(ctx, optionNames, pos);
     }
 }
+
+const insertOptionAt = (ctx, pos, optionIdx, optionName) => {
+    const option = ctx.schema.options[optionIdx];
+    if (!option || !option.prototype) {
+        return;
+    }
+    const newItemSource = option.prototype();
+    insertAt(ctx, structuredClone(newItemSource), pos, optionName);
+}
+
 const copyPasteItemAt = (ctx, src, pos) => {
     const deepCopy = structuredClone(ctx.data[src]);
     const arrayOption = ctx.schema.arrayOptions[src];

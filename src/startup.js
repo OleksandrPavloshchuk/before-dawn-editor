@@ -4,6 +4,8 @@ import {personSample} from "./samples/person.js";
 import {matrixSample} from "./samples/matrix.js";
 import {arraySample} from "./samples/array.js";
 import {usersSample} from "./samples/users.js";
+import {pageAsideReal} from "./samples/real-simple.js";
+import {selectArrayItem} from "./before-dawn-editor/fields/base/array.js";
 
 const toContext = (sample, name) => {
     return {
@@ -17,7 +19,8 @@ const contexts = [
     toContext(personSample, "person"),
     toContext(matrixSample, "matrix"),
     toContext(arraySample, "array"),
-    toContext(usersSample, "users")
+    toContext(usersSample, "users"),
+    toContext(pageAsideReal, "pageAside")
 ];
 
 document
@@ -44,9 +47,16 @@ document
         e.preventDefault();
         renderSample(3);
     });
+document
+    .getElementById("pageAside")
+    .addEventListener("click", (e) => {
+        e.preventDefault();
+        renderSample(4);
+    });
 
 // TODO find better solution than storing in global variable
 let arrayPos;
+let currentCtx;
 
 const renderSample = (index) => {
     const ctx = contexts[index];
@@ -67,7 +77,8 @@ const renderSample = (index) => {
                 editor.value = val;
             }
         };
-        ctx.setArrayOptions = (options, pos) => {
+        ctx.setArrayOptions = (aCtx, options, pos) => {
+            currentCtx = aCtx;
             arrayPos = pos;
             const select = document.getElementById("temp-select-array-option");
             if (select) {
@@ -93,8 +104,8 @@ const renderSample = (index) => {
             .getElementById("temp-do-select-array-option")
             .addEventListener("click", (e) => {
                 const select = document.getElementById("temp-select-array-option");
-                if (select && select.firstChild && ctx.selectArrayItem) {
-                    ctx.selectArrayItem(ctx, select.value, arrayPos);
+                if (select && select.firstChild && selectArrayItem) {
+                    selectArrayItem(currentCtx, select.value, arrayPos);
                     select.replaceChildren();
                     arrayPos = undefined;
                 }
