@@ -108,6 +108,7 @@ const renderSample = (index) => {
                     selectArrayItem(currentCtx, select.value, arrayPos);
                     select.replaceChildren();
                     arrayPos = undefined;
+                    currentCtx = undefined;
                 }
             });
     }
