@@ -80,6 +80,10 @@ body {
     margin-left: auto;
 }
 
+.tag {
+    padding: 7px;
+}
+
 /* Navigation */
 .bde-component > .navigation {
 }

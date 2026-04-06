@@ -3,7 +3,9 @@ import {getRootCtx, resolveNode} from "./main.js";
 
 export const titleDiv = (ctx) => {
     const children = [];
-    children.push(div({}, [titleWithNavigation(ctx)]));
+    children.push(div({}, [
+        span({"class": "large"}, [ctx.name])
+    ]));
     const actions = [];
     if (ctx.saveContext) {
         const saveContextAction = action(
@@ -28,11 +30,4 @@ export const titleDiv = (ctx) => {
         children.push(div({"class": "right"}, actions));
     }
     return div({"class": "title vertical-gap"}, children);
-}
-
-const titleWithNavigation = (ctx) => {
-    const name = span({"class": "large"}, [ctx.name]);
-    const titleWithNavigation = [];
-    titleWithNavigation.push(name);
-    return titleWithNavigation;
 }

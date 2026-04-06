@@ -272,10 +272,10 @@ The editor supports a special field type **fRestArray**, which retrieves data fr
 
 This control internally behaves like an `fStruct` with the following fields:
 
-* **_substitute** – if this hidden field has the value `restOnPublish`, the control treats the field as a request to an external data source
-* **_endpoint** – URL of the RESTful data source
-* **_path** – path to the required part of the response, in the format `field1.field2.field3`
-* **_limit** – maximum number of records to retrieve
+* **$substitute** – if this hidden field has the value `restOnPublish`, the control treats the field as a request to an external data source
+* **$endpoint** – URL of the RESTful data source
+* **$path** – path to the required part of the response, in the format `field1.field2.field3`
+* **$limit** – maximum number of records to retrieve
 
 Example configuration:
 

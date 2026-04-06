@@ -73,8 +73,7 @@ const renderSample = (index) => {
         ctx.onContextChange = (path) => {
             const editor = document.getElementById("temp-search-path");
             if (editor) {
-                const val = path.reduce((acc, item) => acc + " / " + item, "");
-                editor.value = val;
+                editor.value = path.reduce((acc, item) => acc + " / " + item, "");
             }
         };
         ctx.setArrayOptions = (aCtx, options, pos) => {
